@@ -6,7 +6,7 @@
       <el-form-item label="卡号" prop="accountNumber">
         <el-input v-model="queryParams.accountNumber" placeholder="请输入卡号" clearable @keyup.enter.native="handleQuery"/>
       </el-form-item>
-      <el-form-item label="所属人/公司" prop="accountBelong">
+      <!--<el-form-item label="所属人/公司" prop="accountBelong">
         <el-input v-model="queryParams.accountBelong" placeholder="请输入所属人/公司" clearable @keyup.enter.native="handleQuery"/>
       </el-form-item>
       <el-form-item label="所属银行" prop="bank">
@@ -36,7 +36,7 @@
       <el-form-item label="修改时间" prop="modifyTime">
         <el-date-picker v-model="queryParams.modifyTime" style="width: 240px" value-format="yyyy-MM-dd HH:mm:ss" type="daterange"
                         range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" :default-time="['00:00:00', '23:59:59']" />
-      </el-form-item>
+      </el-form-item>-->
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" @click="resetQuery">重置</el-button>
