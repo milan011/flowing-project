@@ -38,7 +38,13 @@
             <artifactId>yudao-module-system-api</artifactId> <!-- 需要使用它，进行操作日志的记录 -->
             <version>${revision}</version>
         </dependency>
-
+    
+        <dependency>
+            <groupId>cn.iocoder.boot</groupId>
+            <artifactId>yudao-module-fp-api</artifactId> <!-- 需要使用它，进行操作日志的记录 -->
+            <version>${revision}</version>
+        </dependency>
+        
         <dependency>
             <groupId>jakarta.validation</groupId>
             <artifactId>jakarta.validation-api</artifactId>

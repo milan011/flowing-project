@@ -6,9 +6,6 @@ import java.util.*;
 import java.time.LocalDateTime;
 import java.time.LocalDateTime;
 import javax.validation.constraints.*;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import static cn.iocoder.yudao.framework.common.util.date.DateUtils.FORMAT_YEAR_MONTH_DAY_HOUR_MINUTE_SECOND;
 
 /**
  * 银行账户 Base VO，提供给添加、修改、详细的子 VO 使用
@@ -40,9 +37,5 @@ public class BankAccountBaseVO {
 
     @Schema(description = "备注", example = "你说的对")
     private String remark;
-
-    @Schema(description = "修改时间")
-    @DateTimeFormat(pattern = FORMAT_YEAR_MONTH_DAY_HOUR_MINUTE_SECOND)
-    private LocalDateTime modifyTime;
 
 }

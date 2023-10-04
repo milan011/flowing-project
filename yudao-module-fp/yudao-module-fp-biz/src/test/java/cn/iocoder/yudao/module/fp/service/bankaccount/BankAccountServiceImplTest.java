@@ -119,7 +119,7 @@ public class BankAccountServiceImplTest extends BaseDbUnitTest {
            o.setMainBody(null);
            o.setRemark(null);
            o.setCreateTime(null);
-           o.setModifyTime(null);
+           o.setUpdateTime(null);
        });
        bankAccountMapper.insert(dbBankAccount);
        // 测试 accountNumber 不匹配
@@ -140,8 +140,8 @@ public class BankAccountServiceImplTest extends BaseDbUnitTest {
        bankAccountMapper.insert(cloneIgnoreId(dbBankAccount, o -> o.setRemark(null)));
        // 测试 createTime 不匹配
        bankAccountMapper.insert(cloneIgnoreId(dbBankAccount, o -> o.setCreateTime(null)));
-       // 测试 modifyTime 不匹配
-       bankAccountMapper.insert(cloneIgnoreId(dbBankAccount, o -> o.setModifyTime(null)));
+       // 测试 updateTime 不匹配
+       bankAccountMapper.insert(cloneIgnoreId(dbBankAccount, o -> o.setUpdateTime(null)));
        // 准备参数
        BankAccountPageReqVO reqVO = new BankAccountPageReqVO();
        reqVO.setAccountNumber(null);
@@ -153,7 +153,7 @@ public class BankAccountServiceImplTest extends BaseDbUnitTest {
        reqVO.setMainBody(null);
        reqVO.setRemark(null);
        reqVO.setCreateTime(buildBetweenTime(2023, 2, 1, 2023, 2, 28));
-       reqVO.setModifyTime(buildBetweenTime(2023, 2, 1, 2023, 2, 28));
+       reqVO.setUpdateTime(buildBetweenTime(2023, 2, 1, 2023, 2, 28));
 
        // 调用
        PageResult<BankAccountDO> pageResult = bankAccountService.getBankAccountPage(reqVO);
@@ -177,7 +177,7 @@ public class BankAccountServiceImplTest extends BaseDbUnitTest {
            o.setMainBody(null);
            o.setRemark(null);
            o.setCreateTime(null);
-           o.setModifyTime(null);
+           o.setUpdateTime(null);
        });
        bankAccountMapper.insert(dbBankAccount);
        // 测试 accountNumber 不匹配
@@ -198,8 +198,8 @@ public class BankAccountServiceImplTest extends BaseDbUnitTest {
        bankAccountMapper.insert(cloneIgnoreId(dbBankAccount, o -> o.setRemark(null)));
        // 测试 createTime 不匹配
        bankAccountMapper.insert(cloneIgnoreId(dbBankAccount, o -> o.setCreateTime(null)));
-       // 测试 modifyTime 不匹配
-       bankAccountMapper.insert(cloneIgnoreId(dbBankAccount, o -> o.setModifyTime(null)));
+       // 测试 updateTime 不匹配
+       bankAccountMapper.insert(cloneIgnoreId(dbBankAccount, o -> o.setUpdateTime(null)));
        // 准备参数
        BankAccountExportReqVO reqVO = new BankAccountExportReqVO();
        reqVO.setAccountNumber(null);
@@ -211,7 +211,7 @@ public class BankAccountServiceImplTest extends BaseDbUnitTest {
        reqVO.setMainBody(null);
        reqVO.setRemark(null);
        reqVO.setCreateTime(buildBetweenTime(2023, 2, 1, 2023, 2, 28));
-       reqVO.setModifyTime(buildBetweenTime(2023, 2, 1, 2023, 2, 28));
+       reqVO.setUpdateTime(buildBetweenTime(2023, 2, 1, 2023, 2, 28));
 
        // 调用
        List<BankAccountDO> list = bankAccountService.getBankAccountList(reqVO);

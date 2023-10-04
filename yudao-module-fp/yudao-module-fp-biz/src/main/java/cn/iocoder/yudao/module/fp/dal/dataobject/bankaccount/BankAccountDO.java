@@ -59,9 +59,5 @@ public class BankAccountDO extends BaseDO {
      * 备注
      */
     private String remark;
-    /**
-     * 修改时间
-     */
-    private LocalDateTime modifyTime;
 
 }

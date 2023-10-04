@@ -33,8 +33,8 @@
         <el-date-picker v-model="queryParams.createTime" style="width: 240px" value-format="yyyy-MM-dd HH:mm:ss" type="daterange"
                         range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" :default-time="['00:00:00', '23:59:59']" />
       </el-form-item>
-      <el-form-item label="修改时间" prop="modifyTime">
-        <el-date-picker v-model="queryParams.modifyTime" style="width: 240px" value-format="yyyy-MM-dd HH:mm:ss" type="daterange"
+      <el-form-item label="修改时间" prop="UpdateTime">
+        <el-date-picker v-model="queryParams.UpdateTime" style="width: 240px" value-format="yyyy-MM-dd HH:mm:ss" type="daterange"
                         range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" :default-time="['00:00:00', '23:59:59']" />
       </el-form-item>-->
       <el-form-item>
@@ -49,10 +49,10 @@
         <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd"
                    v-hasPermi="['fp:bank-account:create']">新增</el-button>
       </el-col>
-      <el-col :span="1.5">
-        <el-button type="warning" plain icon="el-icon-download" size="mini" @click="handleExport" :loading="exportLoading"
-                   v-hasPermi="['fp:bank-account:export']">导出</el-button>
-      </el-col>
+      <!--<el-col :span="1.5">-->
+      <!--  <el-button type="warning" plain icon="el-icon-download" size="mini" @click="handleExport" :loading="exportLoading"-->
+      <!--             v-hasPermi="['fp:bank-account:export']">导出</el-button>-->
+      <!--</el-col>-->
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
@@ -64,17 +64,17 @@
       <el-table-column label="所属银行" align="center" prop="bank" />
       <el-table-column label="开户行" align="center" prop="bankBelong" />
       <el-table-column label="账户余额" align="center" prop="balance" />
-      <el-table-column label="启用状态：0->禁用；1->启用" align="center" prop="status" />
-      <el-table-column label="公/私：1->公户；2->个人账户" align="center" prop="mainBody" />
+      <el-table-column label="启用状态" align="center" prop="status" />
+      <el-table-column label="公/私" align="center" prop="mainBody" />
       <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="创建时间" align="center" prop="createTime" width="180">
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="修改时间" align="center" prop="modifyTime" width="180">
+      <el-table-column label="修改时间" align="center" prop="UpdateTime" width="180">
         <template v-slot="scope">
-          <span>{{ parseTime(scope.row.modifyTime) }}</span>
+          <span>{{ parseTime(scope.row.UpdateTime) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -91,8 +91,8 @@
                 @pagination="getList"/>
 
     <!-- 对话框(添加 / 修改) -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" v-dialogDrag append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+    <el-dialog :title="title" :visible.sync="open" width="50%" v-dialogDrag append-to-body>
+      <el-form ref="form" :model="form" :rules="rules" label-width="180px">
         <el-form-item label="卡号" prop="accountNumber">
           <el-input v-model="form.accountNumber" placeholder="请输入卡号" />
         </el-form-item>
@@ -108,19 +108,11 @@
         <el-form-item label="账户余额" prop="balance">
           <el-input v-model="form.balance" placeholder="请输入账户余额" />
         </el-form-item>
-        <el-form-item label="启用状态：0->禁用；1->启用" prop="status">
-          <el-radio-group v-model="form.status">
-            <el-radio label="1">请选择字典生成</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="公/私：1->公户；2->个人账户" prop="mainBody">
-          <el-input v-model="form.mainBody" placeholder="请输入公/私：1->公户；2->个人账户" />
+        <el-form-item label="公/私" prop="mainBody">
+          <el-input v-model="form.mainBody" placeholder="请输入公/私" />
         </el-form-item>
         <el-form-item label="备注" prop="remark">
           <el-input v-model="form.remark" placeholder="请输入备注" />
-        </el-form-item>
-        <el-form-item label="修改时间" prop="modifyTime">
-          <el-date-picker clearable v-model="form.modifyTime" type="date" value-format="timestamp" placeholder="选择修改时间" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -167,7 +159,7 @@ export default {
         mainBody: null,
         remark: null,
         createTime: [],
-        modifyTime: [],
+        UpdateTime: [],
       },
       // 表单参数
       form: {},
@@ -207,7 +199,7 @@ export default {
         status: undefined,
         mainBody: undefined,
         remark: undefined,
-        modifyTime: undefined,
+        UpdateTime: undefined,
       };
       this.resetForm("form");
     },

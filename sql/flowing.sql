@@ -24,7 +24,7 @@ CREATE TABLE `fp_example_table` (
   `name` varchar(255) DEFAULT NULL COMMENT '名称',
   `money` decimal(10,2) DEFAULT NULL COMMENT '金额',
 	`create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `modify_time` datetime DEFAULT NULL COMMENT '修改时间',
+  `update_time` datetime DEFAULT NULL COMMENT '修改时间',
   `concent` text,
   `status` int(1) DEFAULT '1' COMMENT '帐号启用状态：0->禁用；1->启用',
   PRIMARY KEY (`id`)
@@ -47,8 +47,12 @@ CREATE TABLE `fp_bank_account` (
 	`status` int(1) DEFAULT '1' COMMENT '启用状态：0->禁用；1->启用',
 	`main_body` int(1) DEFAULT '1' COMMENT '公/私：1->公户；2->个人账户',
 	`remark` varchar(500) DEFAULT NULL COMMENT '备注',
-	`create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `modify_time` datetime DEFAULT NULL COMMENT '修改时间',
+	`creator` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updater` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime DEFAULT NULL COMMENT '修改时间',
+  `deleted` bit(1) NOT NULL DEFAULT b'0' COMMENT '是否删除',
+  `tenant_id` bigint NOT NULL DEFAULT 0 COMMENT '租户编号',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='银行账户表';
 
@@ -66,8 +70,12 @@ CREATE TABLE `fp_contract` (
   `money`  bigint NULL DEFAULT NULL COMMENT '金额',
   `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   `status` int(1) DEFAULT '1' COMMENT '启用状态：0->禁用；1->启用',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `modify_time` datetime DEFAULT NULL COMMENT '修改时间',
+  `creator` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updater` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime DEFAULT NULL COMMENT '修改时间',
+  `deleted` bit(1) NOT NULL DEFAULT b'0' COMMENT '是否删除',
+  `tenant_id` bigint NOT NULL DEFAULT 0 COMMENT '租户编号',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='合同表';
 
@@ -83,8 +91,12 @@ CREATE TABLE `fp_project` (
   `money` bigint NULL DEFAULT NULL COMMENT '金额',
   `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   `status` int(1) DEFAULT '1' COMMENT '启用状态：0->禁用；1->启用',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `modify_time` datetime DEFAULT NULL COMMENT '修改时间',
+  `creator` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updater` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime DEFAULT NULL COMMENT '修改时间',
+  `deleted` bit(1) NOT NULL DEFAULT b'0' COMMENT '是否删除',
+  `tenant_id` bigint NOT NULL DEFAULT 0 COMMENT '租户编号',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='项目表';
 
@@ -105,8 +117,12 @@ CREATE TABLE `fp_flowing` (
   `money_type` int(1) DEFAULT '9' COMMENT '资金类型: 1->投资;2->回款;3->费用;9->其他',
   `cost_type` int(1) DEFAULT '9' COMMENT '费用类型: 1->费用1;2->费用2;3->费用3;9->其他', 
   `status` int(1) DEFAULT '1' COMMENT '状态：0->无效；1->有效',
-	`create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `modify_time` datetime DEFAULT NULL COMMENT '修改时间',
+	`creator` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updater` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime DEFAULT NULL COMMENT '修改时间',
+  `deleted` bit(1) NOT NULL DEFAULT b'0' COMMENT '是否删除',
+  `tenant_id` bigint NOT NULL DEFAULT 0 COMMENT '租户编号',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='流水明细表';
 
