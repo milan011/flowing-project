@@ -14,37 +14,33 @@ import static cn.iocoder.yudao.framework.common.util.date.DateUtils.FORMAT_YEAR_
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class BankAccountPageReqVO extends PageParam {
-	
-	@Schema(description = "卡号")
-	private String accountNumber;
-	
-	@Schema(description = "所属人/公司")
-	private String accountBelong;
-	
-	@Schema(description = "所属银行")
-	private String bank;
-	
-	@Schema(description = "开户行")
-	private String bankBelong;
-	
-	@Schema(description = "账户余额")
-	private Long balance;
-	
-	@Schema(description = "启用状态：0->禁用；1->启用", example = "2")
-	private Integer status;
-	
-	@Schema(description = "公/私：1->公户；2->个人账户")
-	private Integer mainBody;
-	
-	@Schema(description = "备注", example = "你说的对")
-	private String remark;
-	
-	@Schema(description = "创建时间")
-	@DateTimeFormat(pattern = FORMAT_YEAR_MONTH_DAY_HOUR_MINUTE_SECOND)
-	private LocalDateTime[] createTime;
-	
-	@Schema(description = "修改时间")
-	@DateTimeFormat(pattern = FORMAT_YEAR_MONTH_DAY_HOUR_MINUTE_SECOND)
-	private LocalDateTime[] updateTime;
-	
+
+    @Schema(description = "卡号")
+    private String accountNumber;
+
+    @Schema(description = "所属人/公司")
+    private String accountBelong;
+
+    @Schema(description = "所属银行")
+    private String bank;
+
+    @Schema(description = "开户行")
+    private String bankBelong;
+
+    @Schema(description = "账户余额")
+    private Long balance;
+
+    @Schema(description = "启用状态：0->禁用；1->启用", example = "2")
+    private Integer status;
+
+    @Schema(description = "公/私：1->公户；2->个人账户")
+    private Integer mainBody;
+
+    @Schema(description = "备注", example = "你说的对")
+    private String remark;
+
+    @Schema(description = "创建时间")
+    @DateTimeFormat(pattern = FORMAT_YEAR_MONTH_DAY_HOUR_MINUTE_SECOND)
+    private LocalDateTime[] createTime;
+
 }

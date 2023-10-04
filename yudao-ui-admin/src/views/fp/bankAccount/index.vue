@@ -74,7 +74,7 @@
       </el-table-column>
       <el-table-column label="修改时间" align="center" prop="UpdateTime" width="180">
         <template v-slot="scope">
-          <span>{{ parseTime(scope.row.UpdateTime) }}</span>
+          <span>{{ parseTime(scope.row.updateTime) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" width="120px" align="center" class-name="small-padding fixed-width">

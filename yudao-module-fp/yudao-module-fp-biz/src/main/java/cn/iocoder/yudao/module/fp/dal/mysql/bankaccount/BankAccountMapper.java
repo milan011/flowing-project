@@ -16,34 +16,33 @@ import cn.iocoder.yudao.module.fp.controller.admin.bankaccount.vo.*;
  */
 @Mapper
 public interface BankAccountMapper extends BaseMapperX<BankAccountDO> {
-	
-	default PageResult<BankAccountDO> selectPage(BankAccountPageReqVO reqVO) {
-		return selectPage(reqVO, new LambdaQueryWrapperX<BankAccountDO>()
-				.eqIfPresent(BankAccountDO::getAccountNumber, reqVO.getAccountNumber())
-				.eqIfPresent(BankAccountDO::getAccountBelong, reqVO.getAccountBelong())
-				.eqIfPresent(BankAccountDO::getBank, reqVO.getBank())
-				.eqIfPresent(BankAccountDO::getBankBelong, reqVO.getBankBelong())
-				.eqIfPresent(BankAccountDO::getBalance, reqVO.getBalance())
-				.eqIfPresent(BankAccountDO::getStatus, reqVO.getStatus())
-				.eqIfPresent(BankAccountDO::getMainBody, reqVO.getMainBody())
-				.eqIfPresent(BankAccountDO::getRemark, reqVO.getRemark())
-				.betweenIfPresent(BankAccountDO::getCreateTime, reqVO.getCreateTime())
-				.betweenIfPresent(BankAccountDO::getUpdateTime, reqVO.getUpdateTime())
-				.orderByDesc(BankAccountDO::getId));
-	}
-	
-	default List<BankAccountDO> selectList(BankAccountExportReqVO reqVO) {
-		return selectList(new LambdaQueryWrapperX<BankAccountDO>()
-				.eqIfPresent(BankAccountDO::getAccountNumber, reqVO.getAccountNumber())
-				.eqIfPresent(BankAccountDO::getAccountBelong, reqVO.getAccountBelong())
-				.eqIfPresent(BankAccountDO::getBank, reqVO.getBank())
-				.eqIfPresent(BankAccountDO::getBankBelong, reqVO.getBankBelong())
-				.eqIfPresent(BankAccountDO::getBalance, reqVO.getBalance())
-				.eqIfPresent(BankAccountDO::getStatus, reqVO.getStatus())
-				.eqIfPresent(BankAccountDO::getMainBody, reqVO.getMainBody())
-				.eqIfPresent(BankAccountDO::getRemark, reqVO.getRemark())
-				.betweenIfPresent(BankAccountDO::getCreateTime, reqVO.getCreateTime())
-				.orderByDesc(BankAccountDO::getId));
-	}
-	
+
+    default PageResult<BankAccountDO> selectPage(BankAccountPageReqVO reqVO) {
+        return selectPage(reqVO, new LambdaQueryWrapperX<BankAccountDO>()
+                .eqIfPresent(BankAccountDO::getAccountNumber, reqVO.getAccountNumber())
+                .eqIfPresent(BankAccountDO::getAccountBelong, reqVO.getAccountBelong())
+                .eqIfPresent(BankAccountDO::getBank, reqVO.getBank())
+                .eqIfPresent(BankAccountDO::getBankBelong, reqVO.getBankBelong())
+                .eqIfPresent(BankAccountDO::getBalance, reqVO.getBalance())
+                .eqIfPresent(BankAccountDO::getStatus, reqVO.getStatus())
+                .eqIfPresent(BankAccountDO::getMainBody, reqVO.getMainBody())
+                .eqIfPresent(BankAccountDO::getRemark, reqVO.getRemark())
+                .betweenIfPresent(BankAccountDO::getCreateTime, reqVO.getCreateTime())
+                .orderByDesc(BankAccountDO::getId));
+    }
+
+    default List<BankAccountDO> selectList(BankAccountExportReqVO reqVO) {
+        return selectList(new LambdaQueryWrapperX<BankAccountDO>()
+                .eqIfPresent(BankAccountDO::getAccountNumber, reqVO.getAccountNumber())
+                .eqIfPresent(BankAccountDO::getAccountBelong, reqVO.getAccountBelong())
+                .eqIfPresent(BankAccountDO::getBank, reqVO.getBank())
+                .eqIfPresent(BankAccountDO::getBankBelong, reqVO.getBankBelong())
+                .eqIfPresent(BankAccountDO::getBalance, reqVO.getBalance())
+                .eqIfPresent(BankAccountDO::getStatus, reqVO.getStatus())
+                .eqIfPresent(BankAccountDO::getMainBody, reqVO.getMainBody())
+                .eqIfPresent(BankAccountDO::getRemark, reqVO.getRemark())
+                .betweenIfPresent(BankAccountDO::getCreateTime, reqVO.getCreateTime())
+                .orderByDesc(BankAccountDO::getId));
+    }
+
 }

@@ -46,4 +46,7 @@ public class BankAccountExcelVO {
     @ExcelProperty("创建时间")
     private LocalDateTime createTime;
 
+    @ExcelProperty("修改时间")
+    private LocalDateTime updateTime;
+
 }
