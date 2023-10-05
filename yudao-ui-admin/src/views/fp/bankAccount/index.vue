@@ -72,11 +72,11 @@
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="修改时间" align="center" prop="UpdateTime" width="180">
+      <!--<el-table-column label="修改时间" align="center" prop="UpdateTime" width="180">
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.updateTime) }}</span>
         </template>
-      </el-table-column>
+      </el-table-column>-->
       <el-table-column label="操作" width="120px" align="center" class-name="small-padding fixed-width">
         <template v-slot="scope">
           <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
@@ -97,10 +97,20 @@
           <el-input v-model="form.accountNumber" placeholder="请输入卡号" />
         </el-form-item>
         <el-form-item label="所属人/公司" prop="accountBelong">
-          <el-input v-model="form.accountBelong" placeholder="请输入所属人/公司" />
+          <el-select v-model="form.accountBelong" placeholder="请选择所属人/公司" clearable size="small">
+            <el-option v-for="(ele, index) in account_belonge" :key="index" :label="ele.label" :value="ele.value" />
+          </el-select>
         </el-form-item>
         <el-form-item label="所属银行" prop="bank">
-          <el-input v-model="form.bank" placeholder="请输入所属银行" />
+          <el-select v-model="form.bank" placeholder="请选择所属银行" clearable size="small">
+            <el-option v-for="(ele, index) in bank_dic" :key="index" :label="ele.label" :value="ele.label" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="启用状态" prop="status">
+          <el-radio-group v-model="form.status">
+            <el-radio label="1">启用</el-radio>
+            <el-radio label="0">禁用</el-radio>
+          </el-radio-group>
         </el-form-item>
         <el-form-item label="开户行" prop="bankBelong">
           <el-input v-model="form.bankBelong" placeholder="请输入开户行" />
@@ -109,7 +119,9 @@
           <el-input v-model="form.balance" placeholder="请输入账户余额" />
         </el-form-item>
         <el-form-item label="公/私" prop="mainBody">
-          <el-input v-model="form.mainBody" placeholder="请输入公/私" />
+          <el-select v-model="form.mainBody" placeholder="请选择公/私" clearable size="small">
+            <el-option v-for="(ele, index) in main_body" :key="index" :label="ele.label" :value="ele.value" />
+          </el-select>
         </el-form-item>
         <el-form-item label="备注" prop="remark">
           <el-input v-model="form.remark" placeholder="请输入备注" />
@@ -125,6 +137,7 @@
 
 <script>
 import { createBankAccount, updateBankAccount, deleteBankAccount, getBankAccount, getBankAccountPage, exportBankAccountExcel } from "@/api/fp/bankAccount";
+import { account_belonge, bank_dic, main_body } from '@/utils/dict'
 
 export default {
   name: "BankAccount",
@@ -136,6 +149,9 @@ export default {
       loading: true,
       // 导出遮罩层
       exportLoading: false,
+      account_belonge: account_belonge,
+      bank_dic: bank_dic,
+      main_body: main_body,
       // 显示搜索条件
       showSearch: true,
       // 总条数
@@ -165,6 +181,13 @@ export default {
       form: {},
       // 表单校验
       rules: {
+        accountNumber: [{ required: true, message: "卡号不能为空", trigger: "blur" }],
+        accountBelong: [{ required: true, message: "所属人/公司不能为空", trigger: "blur" }],
+        bank: [{ required: true, message: "所属银行不能为空", trigger: "blur" }],
+        bankBelong: [{ required: true, message: "开户行不能为空", trigger: "blur" }],
+        balance: [{ required: true, message: "账户余额不能为空", trigger: "blur" }],
+        status: [{ required: true, message: "启用状态不能为空", trigger: "blur" }],
+        mainBody: [{ required: true, message: "请选择公/私", trigger: "blur" }],
       }
     };
   },
@@ -196,7 +219,7 @@ export default {
         bank: undefined,
         bankBelong: undefined,
         balance: undefined,
-        status: undefined,
+        status: '1',
         mainBody: undefined,
         remark: undefined,
         UpdateTime: undefined,
