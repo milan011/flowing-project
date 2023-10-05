@@ -57,7 +57,7 @@ spring:
           #          url: jdbc:sqlserver://127.0.0.1:1433;DatabaseName=${spring.datasource.dynamic.datasource.master.name} # SQLServer 连接的示例
           username: root
           #password: 123456
-          password: 111111
+          password: root
         #          username: sa
         #          password: JSm:g(*%lU4ZAkz06cd52KqT3)i1?H7W
         slave: # 模拟从库，可根据自己需要修改
@@ -168,6 +168,7 @@ logging:
     cn.iocoder.yudao.module.member.dal.mysql: debug
     cn.iocoder.yudao.module.trade.dal.mysql: debug
     cn.iocoder.yudao.module.promotion.dal.mysql: debug
+    cn.iocoder.yudao.module.fp.dal.mysql: debug
 
 debug: false
 

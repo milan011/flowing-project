@@ -22,42 +22,42 @@ import cn.iocoder.yudao.framework.mybatis.core.dataobject.BaseDO;
 @AllArgsConstructor
 public class BankAccountDO extends BaseDO {
 
-    /**
-     * ID
-     */
-    @TableId
-    private Long id;
-    /**
-     * 卡号
-     */
-    private String accountNumber;
-    /**
-     * 所属人/公司
-     */
-    private String accountBelong;
-    /**
-     * 所属银行
-     */
-    private String bank;
-    /**
-     * 开户行
-     */
-    private String bankBelong;
-    /**
-     * 账户余额
-     */
-    private Long balance;
-    /**
-     * 启用状态：0->禁用；1->启用
-     */
-    private Integer status;
-    /**
-     * 公/私：1->公户；2->个人账户
-     */
-    private Integer mainBody;
-    /**
-     * 备注
-     */
-    private String remark;
+  /**
+   * ID
+   */
+  @TableId
+  private Long id;
+  /**
+   * 卡号
+   */
+  private String accountNumber;
+  /**
+   * 所属人/公司
+   */
+  private String accountBelong;
+  /**
+   * 所属银行
+   */
+  private String bank;
+  /**
+   * 开户行
+   */
+  private String bankBelong;
+  /**
+   * 账户余额
+   */
+  private Long balance;
+  /**
+   * 启用状态：0->禁用；1->启用
+   */
+  private Integer status;
+  /**
+   * 公/私：1->公户；2->个人账户
+   */
+  private Integer mainBody;
+  /**
+   * 备注
+   */
+  private String remark;
 
 }

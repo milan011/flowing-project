@@ -153,7 +153,7 @@ public class BankAccountServiceImplTest extends BaseDbUnitTest {
        reqVO.setMainBody(null);
        reqVO.setRemark(null);
        reqVO.setCreateTime(buildBetweenTime(2023, 2, 1, 2023, 2, 28));
-       reqVO.setUpdateTime(buildBetweenTime(2023, 2, 1, 2023, 2, 28));
+       //reqVO.setUpdateTime(buildBetweenTime(2023, 2, 1, 2023, 2, 28));
 
        // 调用
        PageResult<BankAccountDO> pageResult = bankAccountService.getBankAccountPage(reqVO);
@@ -211,7 +211,7 @@ public class BankAccountServiceImplTest extends BaseDbUnitTest {
        reqVO.setMainBody(null);
        reqVO.setRemark(null);
        reqVO.setCreateTime(buildBetweenTime(2023, 2, 1, 2023, 2, 28));
-       reqVO.setUpdateTime(buildBetweenTime(2023, 2, 1, 2023, 2, 28));
+       //reqVO.setUpdateTime(buildBetweenTime(2023, 2, 1, 2023, 2, 28));
 
        // 调用
        List<BankAccountDO> list = bankAccountService.getBankAccountList(reqVO);
