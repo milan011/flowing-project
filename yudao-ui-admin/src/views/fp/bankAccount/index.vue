@@ -64,8 +64,17 @@
       <el-table-column label="所属银行" align="center" prop="bank" />
       <el-table-column label="开户行" align="center" prop="bankBelong" />
       <el-table-column label="账户余额" align="center" prop="balance" />
-      <el-table-column label="启用状态" align="center" prop="status" />
-      <el-table-column label="公/私" align="center" prop="mainBody" />
+      <el-table-column label="启用状态" align="center" prop="status">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.status == 1" type="success">启用</el-tag>
+          <el-tag v-if="scope.row.status == 0" type="info">禁用</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="公/私" align="center" prop="mainBody">
+        <template slot-scope="scope">
+          {{ mainBodyReflect(scope.row.mainBody) }}
+        </template>
+      </el-table-column>
       <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="创建时间" align="center" prop="createTime" width="180">
         <template v-slot="scope">
@@ -116,7 +125,7 @@
           <el-input v-model="form.bankBelong" placeholder="请输入开户行" />
         </el-form-item>
         <el-form-item label="账户余额" prop="balance">
-          <el-input v-model="form.balance" placeholder="请输入账户余额" />
+          <el-input-number :precision="2" :controls="false" v-model="form.balance" placeholder="请输入账户余额" />
         </el-form-item>
         <el-form-item label="公/私" prop="mainBody">
           <el-select v-model="form.mainBody" placeholder="请选择公/私" clearable size="small">
@@ -260,7 +269,9 @@ export default {
         }
         // 修改的提交
         if (this.form.id != null) {
-          updateBankAccount(this.form).then(response => {
+          let params = Object.assign({}, this.form)
+          params.balance = this.form.balance * 100
+          updateBankAccount(params).then(response => {
             this.$modal.msgSuccess("修改成功");
             this.open = false;
             this.getList();
@@ -298,6 +309,12 @@ export default {
           this.$download.excel(response, '银行账户.xls');
           this.exportLoading = false;
         }).catch(() => {});
+    },
+    mainBodyReflect(value){
+      let item = main_body.find((item)=>item.value == value)
+      console.log('value', value)
+      console.log('main_body', main_body)
+      return item.label
     }
   }
 };

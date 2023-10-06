@@ -67,7 +67,7 @@
 
     <!-- 列表 -->
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="ID" align="center" prop="id" />
+      <el-table-column label="ID" align="center" prop="id" width="80px" />
       <el-table-column label="名称" align="center" prop="name" />
       <el-table-column label="流水号" align="center" prop="flowingNumber" />
       <el-table-column label="所属账户" align="center" prop="accId" />
@@ -75,19 +75,19 @@
       <el-table-column label="合同" align="center" prop="conId" />
       <el-table-column label="金额" align="center" prop="money" />
       <el-table-column label="资金类型" align="center" prop="moneyType" />
-      <el-table-column label="费用类型" align="center" prop="costType" />
+      <el-table-column label="费用类型" align="center" prop="costType"/>
       <el-table-column label="状态" align="center" prop="status" />
-      <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+      <el-table-column label="创建时间" align="center" prop="createTime">
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="修改时间" align="center" prop="updateTime" width="180">
+<!--      <el-table-column label="修改时间" align="center" prop="updateTime" width="180">
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.updateTime) }}</span>
         </template>
-      </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      </el-table-column>-->
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="120px">
         <template v-slot="scope">
           <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
                      v-hasPermi="['fp:flowing:update']">修改</el-button>

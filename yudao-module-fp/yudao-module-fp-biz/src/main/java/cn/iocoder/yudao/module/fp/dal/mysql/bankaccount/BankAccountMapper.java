@@ -45,4 +45,8 @@ public interface BankAccountMapper extends BaseMapperX<BankAccountDO> {
                 .orderByDesc(BankAccountDO::getId));
     }
 
+    default BankAccountDO selectByName(String accountNumber) {
+        return selectOne(BankAccountDO::getAccountNumber, accountNumber);
+    }
+
 }

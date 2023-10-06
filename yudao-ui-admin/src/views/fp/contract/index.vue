@@ -54,7 +54,7 @@
     <!-- 列表 -->
     <el-table v-loading="loading" :data="list">
       <el-table-column label="ID" align="center" prop="id" />
-      <el-table-column label="关联项目表ID" align="center" prop="proId" />
+      <el-table-column label="项目" align="center" prop="proId" />
       <el-table-column label="合同名称" align="center" prop="name" />
       <el-table-column label="甲方" align="center" prop="partyA" />
       <el-table-column label="乙方" align="center" prop="partyB" />

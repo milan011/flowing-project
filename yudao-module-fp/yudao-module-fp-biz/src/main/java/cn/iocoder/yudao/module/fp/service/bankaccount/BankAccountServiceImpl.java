@@ -14,6 +14,7 @@ import cn.iocoder.yudao.module.fp.dal.mysql.bankaccount.BankAccountMapper;
 
 import static cn.iocoder.yudao.framework.common.exception.util.ServiceExceptionUtil.exception;
 import static cn.iocoder.yudao.module.fp.enums.ErrorCodeConstants.*;
+import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.POST_NAME_DUPLICATE;
 
 /**
  * 银行账户 Service 实现类
@@ -29,6 +30,10 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     @Override
     public Long createBankAccount(BankAccountCreateReqVO createReqVO) {
+
+        // 校验正确性
+        validateBankAccountForCreateOrUpdate(null, createReqVO.getAccountNumber());
+
         // 插入
         BankAccountDO bankAccount = BankAccountConvert.INSTANCE.convert(createReqVO);
         bankAccountMapper.insert(bankAccount);
@@ -39,7 +44,9 @@ public class BankAccountServiceImpl implements BankAccountService {
     @Override
     public void updateBankAccount(BankAccountUpdateReqVO updateReqVO) {
         // 校验存在
-        validateBankAccountExists(updateReqVO.getId());
+        //validateBankAccountExists(updateReqVO.getId());
+        // 校验正确性
+        validateBankAccountForCreateOrUpdate(updateReqVO.getId(),updateReqVO.getAccountNumber());
         // 更新
         BankAccountDO updateObj = BankAccountConvert.INSTANCE.convert(updateReqVO);
         bankAccountMapper.updateById(updateObj);
@@ -54,6 +61,9 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
     private void validateBankAccountExists(Long id) {
+        if (id == null) {
+            return;
+        }
         if (bankAccountMapper.selectById(id) == null) {
             throw exception(BANK_ACCOUNT_NOT_EXISTS);
         }
@@ -77,6 +87,28 @@ public class BankAccountServiceImpl implements BankAccountService {
     @Override
     public List<BankAccountDO> getBankAccountList(BankAccountExportReqVO exportReqVO) {
         return bankAccountMapper.selectList(exportReqVO);
+    }
+
+    private void validateBankAccountForCreateOrUpdate(Long id, String accountNumber) {
+        // 校验自己存在
+        validateBankAccountExists(id);
+        // 校验岗位名的唯一性
+        validateBankAccountNameUnique(id, accountNumber);
+
+    }
+
+    private void validateBankAccountNameUnique(Long id, String name) {
+        BankAccountDO bankAccount = bankAccountMapper.selectByName(name);
+        if (bankAccount == null) {
+            return;
+        }
+        // 如果 id 为空，说明不用比较是否为相同 id 的岗位
+        if (id == null) {
+            throw exception(BANK_ACCOUNT_NAME_DUPLICATE);
+        }
+        if (!bankAccount.getId().equals(id)) {
+            throw exception(BANK_ACCOUNT_NAME_DUPLICATE);
+        }
     }
 
 }
