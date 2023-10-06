@@ -63,7 +63,11 @@
       <el-table-column label="所属人/公司" align="center" prop="accountBelong" />
       <el-table-column label="所属银行" align="center" prop="bank" />
       <el-table-column label="开户行" align="center" prop="bankBelong" />
-      <el-table-column label="账户余额" align="center" prop="balance" />
+      <el-table-column label="账户余额" align="center" prop="balance">
+        <template slot-scope="scope">
+          {{ scope.row.balance/100}}
+        </template>
+      </el-table-column>
       <el-table-column label="启用状态" align="center" prop="status">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.status == 1" type="success">启用</el-tag>
@@ -257,6 +261,7 @@ export default {
       const id = row.id;
       getBankAccount(id).then(response => {
         this.form = response.data;
+        this.form.balance = this.form.balance / 100
         this.open = true;
         this.title = "修改银行账户";
       });
