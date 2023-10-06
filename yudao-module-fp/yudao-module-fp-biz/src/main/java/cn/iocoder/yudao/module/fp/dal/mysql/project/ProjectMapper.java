@@ -19,15 +19,21 @@ public interface ProjectMapper extends BaseMapperX<ProjectDO> {
 
     default PageResult<ProjectDO> selectPage(ProjectPageReqVO reqVO) {
         return selectPage(reqVO, new LambdaQueryWrapperX<ProjectDO>()
-                .likeIfPresent(ProjectDO::getName, reqVO.getName())
                 .betweenIfPresent(ProjectDO::getCreateTime, reqVO.getCreateTime())
+                .likeIfPresent(ProjectDO::getName, reqVO.getName())
+                .eqIfPresent(ProjectDO::getMoney, reqVO.getMoney())
+                .eqIfPresent(ProjectDO::getRemark, reqVO.getRemark())
+                .eqIfPresent(ProjectDO::getStatus, reqVO.getStatus())
                 .orderByDesc(ProjectDO::getId));
     }
 
     default List<ProjectDO> selectList(ProjectExportReqVO reqVO) {
         return selectList(new LambdaQueryWrapperX<ProjectDO>()
-                .likeIfPresent(ProjectDO::getName, reqVO.getName())
                 .betweenIfPresent(ProjectDO::getCreateTime, reqVO.getCreateTime())
+                .likeIfPresent(ProjectDO::getName, reqVO.getName())
+                .eqIfPresent(ProjectDO::getMoney, reqVO.getMoney())
+                .eqIfPresent(ProjectDO::getRemark, reqVO.getRemark())
+                .eqIfPresent(ProjectDO::getStatus, reqVO.getStatus())
                 .orderByDesc(ProjectDO::getId));
     }
 

@@ -11,4 +11,8 @@ public interface ErrorCodeConstants {
 
     ErrorCode BANK_ACCOUNT_NOT_EXISTS = new ErrorCode(1_010_000_001, "银行账户不存在");
     ErrorCode PROJECT_NOT_EXISTS = new ErrorCode(1_010_000_002, "项目不存在");
+
+    ErrorCode CONTRACT_NOT_EXISTS = new ErrorCode(1_010_000_003, "合同不存在");
+
+    ErrorCode FLOWING_NOT_EXISTS = new ErrorCode(1_010_000_004, "流水明细不存在");
 }

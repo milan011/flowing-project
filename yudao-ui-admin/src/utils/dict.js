@@ -83,6 +83,40 @@ export const DICT_TYPE = {
   PROMOTION_CONDITION_TYPE: 'promotion_condition_type', // 营销的条件类型枚举
 }
 
+export const account_belonge = [
+  {
+    value: '1',
+    label: '尤尼公司',
+  },
+  {
+    value: '2',
+    label: '吴总',
+  }
+]
+
+export const bank_dic = [
+  {
+    value: '1',
+    label: '工商银行',
+  },
+  {
+    value: '2',
+    label: '建设银行',
+  }
+]
+
+export const main_body = [
+  {
+    value: '1',
+    label: '公户',
+  },
+  {
+    value: '2',
+    label: '私户',
+  }
+]
+
+
 /**
  * 获取 dictType 对应的数据字典数组
  *

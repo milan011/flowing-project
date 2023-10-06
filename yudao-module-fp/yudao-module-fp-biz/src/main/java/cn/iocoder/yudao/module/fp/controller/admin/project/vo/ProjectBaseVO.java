@@ -14,8 +14,19 @@ import javax.validation.constraints.*;
 @Data
 public class ProjectBaseVO {
 
-    @Schema(description = "项目名称", requiredMode = Schema.RequiredMode.REQUIRED, example = "王五")
-    @NotNull(message = "项目名称不能为空")
+    @Schema(description = "名称", requiredMode = Schema.RequiredMode.REQUIRED, example = "王五")
+    @NotNull(message = "名称不能为空")
     private String name;
+
+    @Schema(description = "金额", requiredMode = Schema.RequiredMode.REQUIRED)
+    @NotNull(message = "金额不能为空")
+    private Long money;
+
+    @Schema(description = "备注", example = "你说的对")
+    private String remark;
+
+    @Schema(description = "启用状态：0->禁用；1->启用", requiredMode = Schema.RequiredMode.REQUIRED, example = "2")
+    @NotNull(message = "启用状态：0->禁用；1->启用不能为空")
+    private Integer status;
 
 }

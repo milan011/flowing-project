@@ -16,19 +16,25 @@ import com.alibaba.excel.annotation.ExcelProperty;
 @Data
 public class ProjectExcelVO {
 
-    @ExcelProperty("用户ID")
-    private Long id;
-
-    @ExcelProperty("项目名称")
-    private String name;
-
     @ExcelProperty("创建者")
     private String creator;
 
     @ExcelProperty("创建时间")
     private LocalDateTime createTime;
 
-    @ExcelProperty("更新时间")
-    private LocalDateTime updateTime;
+    @ExcelProperty("ID")
+    private Long id;
+
+    @ExcelProperty("名称")
+    private String name;
+
+    @ExcelProperty("金额")
+    private Long money;
+
+    @ExcelProperty("备注")
+    private String remark;
+
+    @ExcelProperty("启用状态：0->禁用；1->启用")
+    private Integer status;
 
 }

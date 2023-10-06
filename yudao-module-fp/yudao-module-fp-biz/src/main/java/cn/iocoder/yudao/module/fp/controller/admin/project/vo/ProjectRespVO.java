@@ -10,16 +10,13 @@ import java.time.LocalDateTime;
 @ToString(callSuper = true)
 public class ProjectRespVO extends ProjectBaseVO {
 
-    @Schema(description = "用户ID", requiredMode = Schema.RequiredMode.REQUIRED, example = "14435")
-    private Long id;
+    @Schema(description = "创建者")
+    private String creator;
 
     @Schema(description = "创建时间", requiredMode = Schema.RequiredMode.REQUIRED)
     private LocalDateTime createTime;
 
-    @Schema(description = "更新时间", requiredMode = Schema.RequiredMode.REQUIRED)
-    private LocalDateTime updateTime;
-
-    @Schema(description = "创建者")
-    private String creator;
+    @Schema(description = "ID", requiredMode = Schema.RequiredMode.REQUIRED, example = "21794")
+    private Long id;
 
 }

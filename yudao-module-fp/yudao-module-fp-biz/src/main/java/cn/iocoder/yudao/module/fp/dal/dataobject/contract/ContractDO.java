@@ -1,4 +1,4 @@
-package cn.iocoder.yudao.module.fp.dal.dataobject.project;
+package cn.iocoder.yudao.module.fp.dal.dataobject.contract;
 
 import lombok.*;
 import java.util.*;
@@ -8,19 +8,19 @@ import com.baomidou.mybatisplus.annotation.*;
 import cn.iocoder.yudao.framework.mybatis.core.dataobject.BaseDO;
 
 /**
- * 项目 DO
+ * 合同 DO
  *
  * @author 芋道源码
  */
-@TableName("fp_project")
-@KeySequence("fp_project_seq") // 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+@TableName("fp_contract")
+@KeySequence("fp_contract_seq") // 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProjectDO extends BaseDO {
+public class ContractDO extends BaseDO {
 
     /**
      * ID
@@ -28,9 +28,21 @@ public class ProjectDO extends BaseDO {
     @TableId
     private Long id;
     /**
-     * 名称
+     * 关联项目表ID
+     */
+    private Long proId;
+    /**
+     * 合同名称
      */
     private String name;
+    /**
+     * 甲方
+     */
+    private String partyA;
+    /**
+     * 乙方
+     */
+    private String partyB;
     /**
      * 金额
      */

@@ -13,11 +13,20 @@ import static cn.iocoder.yudao.framework.common.util.date.DateUtils.FORMAT_YEAR_
 @Data
 public class ProjectExportReqVO {
 
-    @Schema(description = "项目名称", example = "王五")
-    private String name;
-
     @Schema(description = "创建时间")
     @DateTimeFormat(pattern = FORMAT_YEAR_MONTH_DAY_HOUR_MINUTE_SECOND)
     private LocalDateTime[] createTime;
+
+    @Schema(description = "名称", example = "王五")
+    private String name;
+
+    @Schema(description = "金额")
+    private Long money;
+
+    @Schema(description = "备注", example = "你说的对")
+    private String remark;
+
+    @Schema(description = "启用状态：0->禁用；1->启用", example = "2")
+    private Integer status;
 
 }

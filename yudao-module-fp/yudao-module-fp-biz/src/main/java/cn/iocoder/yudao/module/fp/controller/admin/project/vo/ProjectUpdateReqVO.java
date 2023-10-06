@@ -11,8 +11,8 @@ import javax.validation.constraints.*;
 @ToString(callSuper = true)
 public class ProjectUpdateReqVO extends ProjectBaseVO {
 
-    @Schema(description = "用户ID", requiredMode = Schema.RequiredMode.REQUIRED, example = "14435")
-    @NotNull(message = "用户ID不能为空")
+    @Schema(description = "ID", requiredMode = Schema.RequiredMode.REQUIRED, example = "21794")
+    @NotNull(message = "ID不能为空")
     private Long id;
 
 }
