@@ -1,5 +1,6 @@
 package cn.iocoder.yudao.module.fp.controller.admin.project;
 
+import cn.iocoder.yudao.module.fp.controller.admin.bankaccount.vo.BankAccountUpdateStatusReqVO;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import org.springframework.validation.annotation.Validated;
@@ -79,6 +80,14 @@ public class ProjectController {
         return success(ProjectConvert.INSTANCE.convertList(list));
     }
 
+    @GetMapping("/list-active")
+    @Operation(summary = "获得活动项目列表")
+    @PreAuthorize("@ss.hasPermission('fp:project:query')")
+    public CommonResult<List<ProjectRespVO>> getActiveProjectList() {
+        List<ProjectDO> list = projectService.getActiveProjectList();
+        return success(ProjectConvert.INSTANCE.convertList(list));
+    }
+
     @GetMapping("/page")
     @Operation(summary = "获得项目分页")
     @PreAuthorize("@ss.hasPermission('fp:project:query')")
@@ -97,6 +106,14 @@ public class ProjectController {
         // 导出 Excel
         List<ProjectExcelVO> datas = ProjectConvert.INSTANCE.convertList02(list);
         ExcelUtils.write(response, "项目.xls", "数据", ProjectExcelVO.class, datas);
+    }
+
+    @PutMapping("/update-status")
+    @Operation(summary = "修改账户状态")
+    @PreAuthorize("@ss.hasPermission('fp:project:update')")
+    public CommonResult<Boolean> updateProjectStatus(@Valid @RequestBody ProjectUpdateStatusReqVO reqVO) {
+        projectService.updateProjectStatus(reqVO.getId(), reqVO.getStatus());
+        return success(true);
     }
 
 }

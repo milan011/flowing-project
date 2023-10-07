@@ -33,6 +33,13 @@ export function getProject(id) {
     method: 'get'
   })
 }
+// 获得active项目列表(关联合同用)
+export function getAcitveProject() {
+  return request({
+    url: '/fp/project/list-active',
+    method: 'get'
+  })
+}
 
 // 获得项目分页
 export function getProjectPage(query) {
@@ -50,5 +57,18 @@ export function exportProjectExcel(query) {
     method: 'get',
     params: query,
     responseType: 'blob'
+  })
+}
+
+// 项目状态修改
+export function changeProjectStatus(id, status) {
+  const data = {
+    id,
+    status
+  }
+  return request({
+    url: '/fp/project/update-status',
+    method: 'put',
+    data: data
   })
 }

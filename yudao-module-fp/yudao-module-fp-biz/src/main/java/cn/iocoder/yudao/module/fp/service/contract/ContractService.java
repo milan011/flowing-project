@@ -67,4 +67,12 @@ public interface ContractService {
      */
     List<ContractDO> getContractList(ContractExportReqVO exportReqVO);
 
+    /**
+     * 更新合同状态
+     *
+     * @param id 合同ID
+     * @param status 状态
+     */
+    void updateContractStatus(Long id, Integer status);
+
 }

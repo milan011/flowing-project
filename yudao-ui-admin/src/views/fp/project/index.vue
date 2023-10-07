@@ -44,17 +44,31 @@
     <el-table v-loading="loading" :data="list">
       <el-table-column label="ID" align="center" prop="id" />
       <el-table-column label="名称" align="center" prop="name" />
-      <el-table-column label="金额" align="center" prop="money" />
-      <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="启用状态" align="center" prop="status" />
-      <el-table-column label="创建者" align="center" prop="creator" />
+      <el-table-column label="金额" align="center" prop="money">
+          <template slot-scope="scope">
+            {{ scope.row.money/100}}
+          </template>
+      </el-table-column>
+      <el-table-column label="启用状态" align="center" prop="status">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.status == 1" type="success">启用</el-tag>
+          <el-tag v-if="scope.row.status == 0" type="info">禁用</el-tag>
+        </template>
+      </el-table-column>
+<!--      <el-table-column label="创建者" align="center" prop="creator" />-->
+      <el-table-column prop="creator" align="center"  label="创建者" :formatter="userNicknameFormat"/>
       <el-table-column label="创建时间" align="center" prop="createTime" width="180">
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="备注" align="center" prop="remark" />
+      <el-table-column label="操作" align="center" width="180px" class-name="small-padding fixed-width">
         <template v-slot="scope">
+          <el-button v-if="scope.row.status == 0" size="mini" type="text" icon="el-icon-edit" @click="handleStatusChange(scope.row)"
+                     v-hasPermi="['fp:project:update']">启用</el-button>
+          <el-button v-if="scope.row.status == 1" size="mini" type="text" icon="el-icon-edit" @click="handleStatusChange(scope.row)"
+                     v-hasPermi="['fp:project:update']">禁用</el-button>
           <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
                      v-hasPermi="['fp:project:update']">修改</el-button>
           <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
@@ -73,14 +87,15 @@
           <el-input v-model="form.name" placeholder="请输入名称" />
         </el-form-item>
         <el-form-item label="金额" prop="money">
-          <el-input v-model="form.money" placeholder="请输入金额" />
+          <el-input-number :precision="2" :controls="false" v-model="form.money" placeholder="请输入金额" />
         </el-form-item>
         <el-form-item label="备注" prop="remark">
           <el-input v-model="form.remark" placeholder="请输入备注" />
         </el-form-item>
         <el-form-item label="启用状态" prop="status">
           <el-radio-group v-model="form.status">
-            <el-radio label="1">请选择字典生成</el-radio>
+            <el-radio :label="1">启用</el-radio>
+            <el-radio :label="0">禁用</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>
@@ -93,7 +108,8 @@
 </template>
 
 <script>
-import { createProject, updateProject, deleteProject, getProject, getProjectPage, exportProjectExcel } from "@/api/fp/project";
+import { createProject, updateProject, deleteProject, getProject, getProjectPage, exportProjectExcel, changeProjectStatus } from "@/api/fp/project";
+import {listSimpleUsers} from "@/api/system/user";
 
 export default {
   name: "Project",
@@ -107,6 +123,8 @@ export default {
       exportLoading: false,
       // 显示搜索条件
       showSearch: true,
+      // 用户下拉列表
+      users: [],
       // 总条数
       total: 0,
       // 项目列表
@@ -131,12 +149,16 @@ export default {
       rules: {
         name: [{ required: true, message: "名称不能为空", trigger: "blur" }],
         money: [{ required: true, message: "金额不能为空", trigger: "blur" }],
-        status: [{ required: true, message: "启用状态：0->禁用；1->启用不能为空", trigger: "blur" }],
+        status: [{ required: true, message: "启用状态", trigger: "blur" }],
       }
     };
   },
   created() {
     this.getList();
+    // 获得用户列表
+    listSimpleUsers().then(response => {
+      this.users = response.data;
+    });
   },
   methods: {
     /** 查询列表 */
@@ -161,7 +183,7 @@ export default {
         name: undefined,
         money: undefined,
         remark: undefined,
-        status: undefined,
+        status: 1,
       };
       this.resetForm("form");
     },
@@ -187,8 +209,20 @@ export default {
       const id = row.id;
       getProject(id).then(response => {
         this.form = response.data;
+        this.form.money = this.form.money / 100
         this.open = true;
         this.title = "修改项目";
+      });
+    },
+    handleStatusChange(row){
+      let text = row.status === 0 ? "启用" : "停用";
+      let changeStatusTo = row.status === 0 ? 1 : 0;
+      this.$modal.confirm('确认要"' + text + '"项目吗?').then(function() {
+        return changeProjectStatus(row.id, changeStatusTo);
+      }).then(() => {
+        this.$modal.msgSuccess(text + "成功");
+        this.getList();
+      }).catch(function() {
       });
     },
     /** 提交按钮 */
@@ -199,7 +233,9 @@ export default {
         }
         // 修改的提交
         if (this.form.id != null) {
-          updateProject(this.form).then(response => {
+          let params = Object.assign({}, this.form)
+          params.money = this.form.money * 100
+          updateProject(params).then(response => {
             this.$modal.msgSuccess("修改成功");
             this.open = false;
             this.getList();
@@ -237,7 +273,19 @@ export default {
           this.$download.excel(response, '项目.xls');
           this.exportLoading = false;
         }).catch(() => {});
-    }
+    },
+    // 用户昵称展示
+    userNicknameFormat(row, column) {
+      if (!row.creator) {
+        return '未设置';
+      }
+      for (const user of this.users) {
+        if (row.creator == user.id) {
+          return user.nickname;
+        }
+      }
+      return '未知【' + row.creator + '】';
+    },
   }
 };
 </script>

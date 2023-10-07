@@ -54,26 +54,40 @@
     <!-- 列表 -->
     <el-table v-loading="loading" :data="list">
       <el-table-column label="ID" align="center" prop="id" />
-      <el-table-column label="项目" align="center" prop="proId" />
       <el-table-column label="合同名称" align="center" prop="name" />
+      <el-table-column prop="proId" align="center"  label="项目" :formatter="projectnameFormat"/>
+
       <el-table-column label="甲方" align="center" prop="partyA" />
       <el-table-column label="乙方" align="center" prop="partyB" />
-      <el-table-column label="金额" align="center" prop="money" />
-      <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="启用状态" align="center" prop="status" />
-      <el-table-column label="创建者" align="center" prop="creator" />
+      <el-table-column label="金额" align="center" prop="money">
+        <template slot-scope="scope">
+          {{ scope.row.money/100}}
+        </template>
+      </el-table-column>
+      <el-table-column label="启用状态" align="center" prop="status">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.status == 1" type="success">启用</el-tag>
+          <el-tag v-if="scope.row.status == 0" type="info">禁用</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column prop="creator" align="center"  label="创建者" :formatter="userNicknameFormat"/>
       <el-table-column label="创建时间" align="center" prop="createTime" width="180">
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="修改时间" align="center" prop="updateTime" width="180">
+<!--      <el-table-column label="修改时间" align="center" prop="updateTime" width="180">
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.updateTime) }}</span>
         </template>
-      </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      </el-table-column>-->
+      <el-table-column label="备注" align="center" prop="remark" />
+      <el-table-column label="操作" align="center" width="180px" class-name="small-padding fixed-width">
         <template v-slot="scope">
+          <el-button v-if="scope.row.status == 0" size="mini" type="text" icon="el-icon-edit" @click="handleStatusChange(scope.row)"
+                     v-hasPermi="['fp:contract:update']">启用</el-button>
+          <el-button v-if="scope.row.status == 1" size="mini" type="text" icon="el-icon-edit" @click="handleStatusChange(scope.row)"
+                     v-hasPermi="['fp:contract:update']">禁用</el-button>
           <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
                      v-hasPermi="['fp:contract:update']">修改</el-button>
           <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
@@ -88,9 +102,9 @@
     <!-- 对话框(添加 / 修改) -->
     <el-dialog :title="title" :visible.sync="open" width="500px" v-dialogDrag append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="关联项目表ID" prop="proId">
+        <el-form-item label="所属项目" prop="proId">
           <el-select v-model="form.proId" placeholder="请选择关联项目表ID">
-            <el-option label="请选择字典生成" value="" />
+            <el-option v-for="item in activeProjects" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
         </el-form-item>
         <el-form-item label="合同名称" prop="name">
@@ -103,15 +117,16 @@
           <el-input v-model="form.partyB" placeholder="请输入乙方" />
         </el-form-item>
         <el-form-item label="金额" prop="money">
-          <el-input v-model="form.money" placeholder="请输入金额" />
-        </el-form-item>
-        <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" placeholder="请输入备注" />
+          <el-input-number :precision="2" :controls="false" v-model="form.money" placeholder="请输入金额" />
         </el-form-item>
         <el-form-item label="启用状态" prop="status">
           <el-radio-group v-model="form.status">
-            <el-radio label="1">请选择字典生成</el-radio>
+            <el-radio :label="1">启用</el-radio>
+            <el-radio :label="0">禁用</el-radio>
           </el-radio-group>
+        </el-form-item>
+        <el-form-item label="备注" prop="remark">
+          <el-input v-model="form.remark" placeholder="请输入备注" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -123,7 +138,9 @@
 </template>
 
 <script>
-import { createContract, updateContract, deleteContract, getContract, getContractPage, exportContractExcel } from "@/api/fp/contract";
+import { createContract, updateContract, deleteContract, getContract, getContractPage, exportContractExcel, changeContractStatus } from "@/api/fp/contract";
+import { listSimpleUsers } from "@/api/system/user";
+import { getAcitveProject } from "@/api/fp/project"
 
 export default {
   name: "Contract",
@@ -133,6 +150,8 @@ export default {
     return {
       // 遮罩层
       loading: true,
+      users: [],
+      activeProjects: [],
       // 导出遮罩层
       exportLoading: false,
       // 显示搜索条件
@@ -173,6 +192,11 @@ export default {
   },
   created() {
     this.getList();
+    this.activeProjectListFetch();
+    // 获得用户列表
+    listSimpleUsers().then(response => {
+      this.users = response.data;
+    });
   },
   methods: {
     /** 查询列表 */
@@ -200,7 +224,7 @@ export default {
         partyB: undefined,
         money: undefined,
         remark: undefined,
-        status: undefined,
+        status: 1,
       };
       this.resetForm("form");
     },
@@ -217,17 +241,31 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
+      this.activeProjectListFetch();
       this.open = true;
       this.title = "添加合同";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
+      this.activeProjectListFetch();
       const id = row.id;
       getContract(id).then(response => {
         this.form = response.data;
+        this.form.money = this.form.money / 100
         this.open = true;
         this.title = "修改合同";
+      });
+    },
+    handleStatusChange(row){
+      let text = row.status === 0 ? "启用" : "停用";
+      let changeStatusTo = row.status === 0 ? 1 : 0;
+      this.$modal.confirm('确认要"' + text + '"项目吗?').then(function() {
+        return changeContractStatus(row.id, changeStatusTo);
+      }).then(() => {
+        this.$modal.msgSuccess(text + "成功");
+        this.getList();
+      }).catch(function() {
       });
     },
     /** 提交按钮 */
@@ -238,7 +276,9 @@ export default {
         }
         // 修改的提交
         if (this.form.id != null) {
-          updateContract(this.form).then(response => {
+          let params = Object.assign({}, this.form)
+          params.money = this.form.money * 100
+          updateContract(params).then(response => {
             this.$modal.msgSuccess("修改成功");
             this.open = false;
             this.getList();
@@ -276,6 +316,35 @@ export default {
           this.$download.excel(response, '合同.xls');
           this.exportLoading = false;
         }).catch(() => {});
+    },
+    activeProjectListFetch(){
+      getAcitveProject().then(response => {
+        this.activeProjects = response.data;
+      })
+    },
+    // 项目展示
+    projectnameFormat(row, column) {
+      if (!row.proId) {
+        return '未设置';
+      }
+      for (const project of this.activeProjects) {
+        if (row.proId == project.id) {
+          return project.name;
+        }
+      }
+      return '未知';
+    },
+    // 用户昵称展示
+    userNicknameFormat(row, column) {
+      if (!row.creator) {
+        return '未设置';
+      }
+      for (const user of this.users) {
+        if (row.creator == user.id) {
+          return user.nickname;
+        }
+      }
+      return '未知【' + row.creator + '】';
     }
   }
 };

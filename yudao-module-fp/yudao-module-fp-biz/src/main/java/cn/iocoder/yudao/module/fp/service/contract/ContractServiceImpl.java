@@ -1,5 +1,6 @@
 package cn.iocoder.yudao.module.fp.service.contract;
 
+import cn.iocoder.yudao.module.fp.dal.dataobject.project.ProjectDO;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import org.springframework.validation.annotation.Validated;
@@ -29,6 +30,8 @@ public class ContractServiceImpl implements ContractService {
 
     @Override
     public Long createContract(ContractCreateReqVO createReqVO) {
+        // 校验正确性
+        validateContractForCreateOrUpdate(null, createReqVO.getName());
         // 插入
         ContractDO contract = ContractConvert.INSTANCE.convert(createReqVO);
         contractMapper.insert(contract);
@@ -39,9 +42,19 @@ public class ContractServiceImpl implements ContractService {
     @Override
     public void updateContract(ContractUpdateReqVO updateReqVO) {
         // 校验存在
-        validateContractExists(updateReqVO.getId());
+        validateContractForCreateOrUpdate(updateReqVO.getId(),updateReqVO.getName());
         // 更新
         ContractDO updateObj = ContractConvert.INSTANCE.convert(updateReqVO);
+        contractMapper.updateById(updateObj);
+    }
+
+    @Override
+    public void updateContractStatus(Long id, Integer status) {
+        // 校验是否可以更新
+        //validateContractForUpdate(id);
+
+        // 更新状态
+        ContractDO updateObj = new ContractDO().setId(id).setStatus(status);
         contractMapper.updateById(updateObj);
     }
 
@@ -51,12 +64,6 @@ public class ContractServiceImpl implements ContractService {
         validateContractExists(id);
         // 删除
         contractMapper.deleteById(id);
-    }
-
-    private void validateContractExists(Long id) {
-        if (contractMapper.selectById(id) == null) {
-            throw exception(CONTRACT_NOT_EXISTS);
-        }
     }
 
     @Override
@@ -77,6 +84,37 @@ public class ContractServiceImpl implements ContractService {
     @Override
     public List<ContractDO> getContractList(ContractExportReqVO exportReqVO) {
         return contractMapper.selectList(exportReqVO);
+    }
+
+    private void validateContractForCreateOrUpdate(Long id, String name) {
+        // 校验自己存在
+        validateContractExists(id);
+        // 校验岗位名的唯一性
+        validateContractNameUnique(id, name);
+
+    }
+
+    private void validateContractExists(Long id) {
+        if (id == null) {
+            return;
+        }
+        if (contractMapper.selectById(id) == null) {
+            throw exception(CONTRACT_NOT_EXISTS);
+        }
+    }
+
+    private void validateContractNameUnique(Long id, String name) {
+        ContractDO contract = contractMapper.selectByName(name);
+        if (contract == null) {
+            return;
+        }
+        // 如果 id 为空，说明不用比较是否为相同 id 的岗位
+        if (id == null) {
+            throw exception(CONTRACT_DUPLICATE);
+        }
+        if (!contract.getId().equals(id)) {
+            throw exception(CONTRACT_DUPLICATE);
+        }
     }
 
 }

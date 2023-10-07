@@ -52,6 +52,12 @@ public interface ProjectService {
     List<ProjectDO> getProjectList(Collection<Long> ids);
 
     /**
+     * 获得有效项目列表
+     * @return 项目列表
+     */
+    List<ProjectDO> getActiveProjectList();
+
+    /**
      * 获得项目分页
      *
      * @param pageReqVO 分页查询
@@ -66,5 +72,13 @@ public interface ProjectService {
      * @return 项目列表
      */
     List<ProjectDO> getProjectList(ProjectExportReqVO exportReqVO);
+
+    /**
+     * 更新项目状态
+     *
+     * @param id 项目ID
+     * @param status 状态
+     */
+    void updateProjectStatus(Long id, Integer status);
 
 }

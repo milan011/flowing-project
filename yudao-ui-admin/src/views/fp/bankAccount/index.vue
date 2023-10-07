@@ -248,7 +248,7 @@ export default {
         bank: undefined,
         bankBelong: undefined,
         balance: undefined,
-        status: '1',
+        status: 1,
         mainBody: undefined,
         remark: undefined,
         UpdateTime: undefined,
@@ -283,7 +283,6 @@ export default {
       });
     },
     handleStatusChange(row){
-      // 此时，row 已经变成目标状态了，所以可以直接提交请求和提示
       let text = row.status === 0 ? "启用" : "停用";
       let changeStatusTo = row.status === 0 ? 1 : 0;
       this.$modal.confirm('确认要"' + text + '"账户吗?').then(function() {

@@ -1,5 +1,6 @@
 package cn.iocoder.yudao.module.fp.controller.admin.contract;
 
+import cn.iocoder.yudao.module.fp.controller.admin.project.vo.ProjectUpdateStatusReqVO;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import org.springframework.validation.annotation.Validated;
@@ -34,69 +35,77 @@ import cn.iocoder.yudao.module.fp.service.contract.ContractService;
 @Validated
 public class ContractController {
 
-    @Resource
-    private ContractService contractService;
+  @Resource
+  private ContractService contractService;
 
-    @PostMapping("/create")
-    @Operation(summary = "创建合同")
-    @PreAuthorize("@ss.hasPermission('fp:contract:create')")
-    public CommonResult<Long> createContract(@Valid @RequestBody ContractCreateReqVO createReqVO) {
-        return success(contractService.createContract(createReqVO));
-    }
+  @PostMapping("/create")
+  @Operation(summary = "创建合同")
+  @PreAuthorize("@ss.hasPermission('fp:contract:create')")
+  public CommonResult<Long> createContract(@Valid @RequestBody ContractCreateReqVO createReqVO) {
+    return success(contractService.createContract(createReqVO));
+  }
 
-    @PutMapping("/update")
-    @Operation(summary = "更新合同")
-    @PreAuthorize("@ss.hasPermission('fp:contract:update')")
-    public CommonResult<Boolean> updateContract(@Valid @RequestBody ContractUpdateReqVO updateReqVO) {
-        contractService.updateContract(updateReqVO);
-        return success(true);
-    }
+  @PutMapping("/update")
+  @Operation(summary = "更新合同")
+  @PreAuthorize("@ss.hasPermission('fp:contract:update')")
+  public CommonResult<Boolean> updateContract(@Valid @RequestBody ContractUpdateReqVO updateReqVO) {
+    contractService.updateContract(updateReqVO);
+    return success(true);
+  }
 
-    @DeleteMapping("/delete")
-    @Operation(summary = "删除合同")
-    @Parameter(name = "id", description = "编号", required = true)
-    @PreAuthorize("@ss.hasPermission('fp:contract:delete')")
-    public CommonResult<Boolean> deleteContract(@RequestParam("id") Long id) {
-        contractService.deleteContract(id);
-        return success(true);
-    }
+  @DeleteMapping("/delete")
+  @Operation(summary = "删除合同")
+  @Parameter(name = "id", description = "编号", required = true)
+  @PreAuthorize("@ss.hasPermission('fp:contract:delete')")
+  public CommonResult<Boolean> deleteContract(@RequestParam("id") Long id) {
+    contractService.deleteContract(id);
+    return success(true);
+  }
 
-    @GetMapping("/get")
-    @Operation(summary = "获得合同")
-    @Parameter(name = "id", description = "编号", required = true, example = "1024")
-    @PreAuthorize("@ss.hasPermission('fp:contract:query')")
-    public CommonResult<ContractRespVO> getContract(@RequestParam("id") Long id) {
-        ContractDO contract = contractService.getContract(id);
-        return success(ContractConvert.INSTANCE.convert(contract));
-    }
+  @GetMapping("/get")
+  @Operation(summary = "获得合同")
+  @Parameter(name = "id", description = "编号", required = true, example = "1024")
+  @PreAuthorize("@ss.hasPermission('fp:contract:query')")
+  public CommonResult<ContractRespVO> getContract(@RequestParam("id") Long id) {
+    ContractDO contract = contractService.getContract(id);
+    return success(ContractConvert.INSTANCE.convert(contract));
+  }
 
-    @GetMapping("/list")
-    @Operation(summary = "获得合同列表")
-    @Parameter(name = "ids", description = "编号列表", required = true, example = "1024,2048")
-    @PreAuthorize("@ss.hasPermission('fp:contract:query')")
-    public CommonResult<List<ContractRespVO>> getContractList(@RequestParam("ids") Collection<Long> ids) {
-        List<ContractDO> list = contractService.getContractList(ids);
-        return success(ContractConvert.INSTANCE.convertList(list));
-    }
+  @GetMapping("/list")
+  @Operation(summary = "获得合同列表")
+  @Parameter(name = "ids", description = "编号列表", required = true, example = "1024,2048")
+  @PreAuthorize("@ss.hasPermission('fp:contract:query')")
+  public CommonResult<List<ContractRespVO>> getContractList(@RequestParam("ids") Collection<Long> ids) {
+    List<ContractDO> list = contractService.getContractList(ids);
+    return success(ContractConvert.INSTANCE.convertList(list));
+  }
 
-    @GetMapping("/page")
-    @Operation(summary = "获得合同分页")
-    @PreAuthorize("@ss.hasPermission('fp:contract:query')")
-    public CommonResult<PageResult<ContractRespVO>> getContractPage(@Valid ContractPageReqVO pageVO) {
-        PageResult<ContractDO> pageResult = contractService.getContractPage(pageVO);
-        return success(ContractConvert.INSTANCE.convertPage(pageResult));
-    }
+  @GetMapping("/page")
+  @Operation(summary = "获得合同分页")
+  @PreAuthorize("@ss.hasPermission('fp:contract:query')")
+  public CommonResult<PageResult<ContractRespVO>> getContractPage(@Valid ContractPageReqVO pageVO) {
+    PageResult<ContractDO> pageResult = contractService.getContractPage(pageVO);
+    return success(ContractConvert.INSTANCE.convertPage(pageResult));
+  }
 
-    @GetMapping("/export-excel")
-    @Operation(summary = "导出合同 Excel")
-    @PreAuthorize("@ss.hasPermission('fp:contract:export')")
-    @OperateLog(type = EXPORT)
-    public void exportContractExcel(@Valid ContractExportReqVO exportReqVO,
-              HttpServletResponse response) throws IOException {
-        List<ContractDO> list = contractService.getContractList(exportReqVO);
-        // 导出 Excel
-        List<ContractExcelVO> datas = ContractConvert.INSTANCE.convertList02(list);
-        ExcelUtils.write(response, "合同.xls", "数据", ContractExcelVO.class, datas);
-    }
+  @GetMapping("/export-excel")
+  @Operation(summary = "导出合同 Excel")
+  @PreAuthorize("@ss.hasPermission('fp:contract:export')")
+  @OperateLog(type = EXPORT)
+  public void exportContractExcel(@Valid ContractExportReqVO exportReqVO,
+                                  HttpServletResponse response) throws IOException {
+    List<ContractDO> list = contractService.getContractList(exportReqVO);
+    // 导出 Excel
+    List<ContractExcelVO> datas = ContractConvert.INSTANCE.convertList02(list);
+    ExcelUtils.write(response, "合同.xls", "数据", ContractExcelVO.class, datas);
+  }
+
+  @PutMapping("/update-status")
+  @Operation(summary = "修改合同状态")
+  @PreAuthorize("@ss.hasPermission('fp:contract:update')")
+  public CommonResult<Boolean> updateCnontractStatus(@Valid @RequestBody ContractUpdateStatusReqVO reqVO) {
+    contractService.updateContractStatus(reqVO.getId(), reqVO.getStatus());
+    return success(true);
+  }
 
 }

@@ -13,6 +13,9 @@ public class BankAccountRespVO extends BankAccountBaseVO {
     @Schema(description = "ID", requiredMode = Schema.RequiredMode.REQUIRED, example = "30789")
     private Long id;
 
+    @Schema(description = "创建者")
+    private String creator;
+
     @Schema(description = "创建时间")
     private LocalDateTime createTime;
 

@@ -6,6 +6,7 @@ import cn.iocoder.yudao.framework.common.pojo.PageResult;
 import cn.iocoder.yudao.framework.mybatis.core.query.LambdaQueryWrapperX;
 import cn.iocoder.yudao.framework.mybatis.core.mapper.BaseMapperX;
 import cn.iocoder.yudao.module.fp.dal.dataobject.contract.ContractDO;
+import cn.iocoder.yudao.module.fp.dal.dataobject.project.ProjectDO;
 import org.apache.ibatis.annotations.Mapper;
 import cn.iocoder.yudao.module.fp.controller.admin.contract.vo.*;
 
@@ -41,6 +42,10 @@ public interface ContractMapper extends BaseMapperX<ContractDO> {
                 .eqIfPresent(ContractDO::getStatus, reqVO.getStatus())
                 .betweenIfPresent(ContractDO::getCreateTime, reqVO.getCreateTime())
                 .orderByDesc(ContractDO::getId));
+    }
+
+    default ContractDO selectByName(String name) {
+        return selectOne(ContractDO::getName, name);
     }
 
 }

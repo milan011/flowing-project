@@ -53,7 +53,7 @@ export function exportBankAccountExcel(query) {
   })
 }
 
-// 角色状态修改
+// 账户状态修改
 export function changeBankAccountStatus(id, status) {
   const data = {
     id,
