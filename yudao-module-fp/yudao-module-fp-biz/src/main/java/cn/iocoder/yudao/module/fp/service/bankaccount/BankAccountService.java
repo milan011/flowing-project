@@ -67,4 +67,12 @@ public interface BankAccountService {
      */
     List<BankAccountDO> getBankAccountList(BankAccountExportReqVO exportReqVO);
 
+    /**
+     * 更新账户状态
+     *
+     * @param id 账户ID
+     * @param status 状态
+     */
+    void updateBankAccountStatus(Long id, Integer status);
+
 }

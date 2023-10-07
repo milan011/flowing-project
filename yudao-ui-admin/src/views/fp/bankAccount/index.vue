@@ -60,7 +60,11 @@
     <el-table v-loading="loading" :data="list">
       <el-table-column label="ID" align="center" prop="id" />
       <el-table-column label="卡号" align="center" prop="accountNumber" />
-      <el-table-column label="所属人/公司" align="center" prop="accountBelong" />
+      <el-table-column label="所属人/公司" align="center" prop="accountBelong">
+        <template slot-scope="scope">
+          {{ accountBelongeReflect(scope.row.accountBelong) }}
+        </template>
+      </el-table-column>
       <el-table-column label="所属银行" align="center" prop="bank" />
       <el-table-column label="开户行" align="center" prop="bankBelong" />
       <el-table-column label="账户余额" align="center" prop="balance">
@@ -90,8 +94,12 @@
           <span>{{ parseTime(scope.row.updateTime) }}</span>
         </template>
       </el-table-column>-->
-      <el-table-column label="操作" width="120px" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="操作" width="180px" align="center" class-name="small-padding fixed-width">
         <template v-slot="scope">
+          <el-button v-if="scope.row.status == 0" size="mini" type="text" icon="el-icon-edit" @click="handleStatusChange(scope.row)"
+                     v-hasPermi="['fp:bank-account:update']">启用</el-button>
+          <el-button v-if="scope.row.status == 1" size="mini" type="text" icon="el-icon-edit" @click="handleStatusChange(scope.row)"
+                     v-hasPermi="['fp:bank-account:update']">禁用</el-button>
           <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
                      v-hasPermi="['fp:bank-account:update']">修改</el-button>
           <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
@@ -149,7 +157,15 @@
 </template>
 
 <script>
-import { createBankAccount, updateBankAccount, deleteBankAccount, getBankAccount, getBankAccountPage, exportBankAccountExcel } from "@/api/fp/bankAccount";
+import {
+  createBankAccount,
+  updateBankAccount,
+  deleteBankAccount,
+  getBankAccount,
+  getBankAccountPage,
+  exportBankAccountExcel,
+  changeBankAccountStatus
+} from "@/api/fp/bankAccount";
 import { account_belonge, bank_dic, main_body } from '@/utils/dict'
 
 export default {
@@ -266,6 +282,18 @@ export default {
         this.title = "修改银行账户";
       });
     },
+    handleStatusChange(row){
+      // 此时，row 已经变成目标状态了，所以可以直接提交请求和提示
+      let text = row.status === 0 ? "启用" : "停用";
+      let changeStatusTo = row.status === 0 ? 1 : 0;
+      this.$modal.confirm('确认要"' + text + '"账户吗?').then(function() {
+        return changeBankAccountStatus(row.id, changeStatusTo);
+      }).then(() => {
+        this.$modal.msgSuccess(text + "成功");
+        this.getList();
+      }).catch(function() {
+      });
+    },
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
@@ -319,6 +347,10 @@ export default {
       let item = main_body.find((item)=>item.value == value)
       console.log('value', value)
       console.log('main_body', main_body)
+      return item.label
+    },
+    accountBelongeReflect(value){
+      let item = account_belonge.find((item)=>item.value == value)
       return item.label
     }
   }

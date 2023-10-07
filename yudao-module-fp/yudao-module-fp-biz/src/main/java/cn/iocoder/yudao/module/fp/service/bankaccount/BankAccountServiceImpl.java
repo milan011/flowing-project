@@ -1,5 +1,6 @@
 package cn.iocoder.yudao.module.fp.service.bankaccount;
 
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import org.springframework.validation.annotation.Validated;
@@ -87,6 +88,16 @@ public class BankAccountServiceImpl implements BankAccountService {
   @Override
   public List<BankAccountDO> getBankAccountList(BankAccountExportReqVO exportReqVO) {
     return bankAccountMapper.selectList(exportReqVO);
+  }
+
+  @Override
+  public void updateBankAccountStatus(Long id, Integer status) {
+    // 校验是否可以更新
+    //validateBankAccountForUpdate(id);
+
+    // 更新状态
+    BankAccountDO updateObj = new BankAccountDO().setId(id).setStatus(status);
+    bankAccountMapper.updateById(updateObj);
   }
 
   private void validateBankAccountForCreateOrUpdate(Long id, String accountNumber) {

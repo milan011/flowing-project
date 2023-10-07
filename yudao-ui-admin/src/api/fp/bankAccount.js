@@ -52,3 +52,16 @@ export function exportBankAccountExcel(query) {
     responseType: 'blob'
   })
 }
+
+// 角色状态修改
+export function changeBankAccountStatus(id, status) {
+  const data = {
+    id,
+    status
+  }
+  return request({
+    url: '/fp/bank-account/update-status',
+    method: 'put',
+    data: data
+  })
+}

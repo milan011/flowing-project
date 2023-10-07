@@ -99,4 +99,12 @@ public class BankAccountController {
         ExcelUtils.write(response, "银行账户.xls", "数据", BankAccountExcelVO.class, datas);
     }
 
+    @PutMapping("/update-status")
+    @Operation(summary = "修改账户状态")
+    @PreAuthorize("@ss.hasPermission('fp:bank-account:update')")
+    public CommonResult<Boolean> updateBankAccountStatus(@Valid @RequestBody BankAccountUpdateStatusReqVO reqVO) {
+        bankAccountService.updateBankAccountStatus(reqVO.getId(), reqVO.getStatus());
+        return success(true);
+    }
+
 }
