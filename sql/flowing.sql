@@ -39,6 +39,7 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `fp_bank_account`;
 CREATE TABLE `fp_bank_account` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `name` varchar(255) DEFAULT NULL COMMENT '账户名称',
 	`account_number` varchar(255) DEFAULT NULL COMMENT '卡号',
 	`account_belong` varchar(255) DEFAULT NULL COMMENT '所属人/公司',
 	`bank` varchar(64) DEFAULT NULL COMMENT '所属银行',

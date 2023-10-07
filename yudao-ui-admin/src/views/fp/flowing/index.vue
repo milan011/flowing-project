@@ -107,7 +107,7 @@
           <el-input v-model="form.name" placeholder="请输入名称" />
         </el-form-item>
         <el-form-item label="流水号" prop="flowingNumber">
-          <el-input v-model="form.flowingNumber" placeholder="请输入流水号" />
+          <el-input-number :precision="0" :controls="false" v-model="form.flowingNumber" placeholder="请输入流水号" />
         </el-form-item>
         <el-form-item label="所属账户" prop="accId">
           <el-select v-model="form.accId" placeholder="请选择所属账户">
@@ -125,21 +125,22 @@
           </el-select>
         </el-form-item>
         <el-form-item label="金额" prop="money">
-          <el-input v-model="form.money" placeholder="请输入金额" />
+          <el-input-number :precision="2" :controls="false" v-model="form.money" placeholder="请输入金额" />
         </el-form-item>
         <el-form-item label="资金类型" prop="moneyType">
           <el-select v-model="form.moneyType" placeholder="请选择资金类型: 1->投资;2->回款;3->费用;9->其他">
-            <el-option label="请选择字典生成" value="" />
+            <el-option v-for="(item, index) in money_type" :key="index" :label="item.label" :value="item.value" />
           </el-select>
         </el-form-item>
         <el-form-item label="费用类型" prop="costType">
           <el-select v-model="form.costType" placeholder="请选择费用类型: 1->费用1;2->费用2;3->费用3;9->其他">
-            <el-option label="请选择字典生成" value="" />
+            <el-option v-for="(item, index) in cost_type" :key="index" :label="item.label" :value="item.value" />
           </el-select>
         </el-form-item>
         <el-form-item label="状态" prop="status">
           <el-radio-group v-model="form.status">
-            <el-radio label="1">请选择字典生成</el-radio>
+            <el-radio :label="1">启用</el-radio>
+            <el-radio :label="0">禁用</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>
@@ -153,6 +154,7 @@
 
 <script>
 import { createFlowing, updateFlowing, deleteFlowing, getFlowing, getFlowingPage, exportFlowingExcel } from "@/api/fp/flowing";
+import { money_type, cost_type } from "@/utils/dict"
 
 export default {
   name: "Flowing",
@@ -164,6 +166,8 @@ export default {
       loading: true,
       // 导出遮罩层
       exportLoading: false,
+      money_type: money_type,
+      cost_type: cost_type,
       // 显示搜索条件
       showSearch: true,
       // 总条数
@@ -236,7 +240,7 @@ export default {
         money: undefined,
         moneyType: undefined,
         costType: undefined,
-        status: undefined,
+        status: 1,
       };
       this.resetForm("form");
     },

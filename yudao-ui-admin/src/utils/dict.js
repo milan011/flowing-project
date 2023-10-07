@@ -116,6 +116,47 @@ export const main_body = [
   }
 ]
 
+export const money_type = [
+  {
+    value: 1,
+    label: '投资',
+  },
+  {
+    value: 2,
+    label: '回款',
+  },
+  {
+    value: 3,
+    label: '费用',
+  },
+  {
+    value: 9,
+    label: '其他',
+  }
+]
+
+export const cost_type = [
+  {
+    value: 1,
+    label: '费用1',
+  },
+  {
+    value: 2,
+    label: '费用2',
+  },
+  {
+    value: 3,
+    label: '费用3',
+  },
+  {
+    value: 4,
+    label: '费用4',
+  },
+  {
+    value: 9,
+    label: '其他费用',
+  }
+]
 
 /**
  * 获取 dictType 对应的数据字典数组

@@ -59,6 +59,7 @@
     <!-- 列表 -->
     <el-table v-loading="loading" :data="list">
       <el-table-column label="ID" align="center" prop="id" />
+      <el-table-column label="账户" align="center" prop="name" />
       <el-table-column label="卡号" align="center" prop="accountNumber" />
       <el-table-column label="所属人/公司" align="center" prop="accountBelong">
         <template slot-scope="scope">
@@ -114,6 +115,9 @@
     <!-- 对话框(添加 / 修改) -->
     <el-dialog :title="title" :visible.sync="open" width="50%" v-dialogDrag append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="180px">
+        <el-form-item label="账户" prop="name">
+          <el-input v-model="form.name" placeholder="请输入账户名称" />
+        </el-form-item>
         <el-form-item label="卡号" prop="accountNumber">
           <el-input v-model="form.accountNumber" placeholder="请输入卡号" />
         </el-form-item>
@@ -210,6 +214,7 @@ export default {
       form: {},
       // 表单校验
       rules: {
+        name: [{ required: true, message: "账户名称不能为空", trigger: "blur" }],
         accountNumber: [{ required: true, message: "卡号不能为空", trigger: "blur" }],
         accountBelong: [{ required: true, message: "所属人/公司不能为空", trigger: "blur" }],
         bank: [{ required: true, message: "所属银行不能为空", trigger: "blur" }],
@@ -243,6 +248,7 @@ export default {
     reset() {
       this.form = {
         id: undefined,
+        name: undefined,
         accountNumber: undefined,
         accountBelong: undefined,
         bank: undefined,

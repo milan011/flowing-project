@@ -60,4 +60,9 @@ public class BankAccountDO extends BaseDO {
    */
   private String remark;
 
+  /**
+   * 账户名称
+   */
+  private String name;
+
 }

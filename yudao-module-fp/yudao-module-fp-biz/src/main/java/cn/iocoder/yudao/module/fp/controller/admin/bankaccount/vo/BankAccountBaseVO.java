@@ -38,4 +38,7 @@ public class BankAccountBaseVO {
     @Schema(description = "备注", example = "你说的对")
     private String remark;
 
+    @Schema(description = "账户名称", example = "wm")
+    private String name;
+
 }
