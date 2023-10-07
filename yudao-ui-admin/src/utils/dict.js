@@ -107,11 +107,11 @@ export const bank_dic = [
 
 export const main_body = [
   {
-    value: '1',
+    value: 1,
     label: '公户',
   },
   {
-    value: '2',
+    value: 2,
     label: '私户',
   }
 ]

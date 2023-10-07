@@ -129,8 +129,8 @@
         </el-form-item>
         <el-form-item label="启用状态" prop="status">
           <el-radio-group v-model="form.status">
-            <el-radio label="1">启用</el-radio>
-            <el-radio label="0">禁用</el-radio>
+            <el-radio :label="1">启用</el-radio>
+            <el-radio :label="0">禁用</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="开户行" prop="bankBelong">
