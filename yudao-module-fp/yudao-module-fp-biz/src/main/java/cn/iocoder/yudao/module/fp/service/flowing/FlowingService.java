@@ -59,6 +59,8 @@ public interface FlowingService {
      */
     PageResult<FlowingDO> getFlowingPage(FlowingPageReqVO pageReqVO);
 
+    PageResult<FlowingRespVO> getFlowingWithAccountPage(FlowingPageReqVO pageReqVO);
+
     /**
      * 获得流水明细列表, 用于 Excel 导出
      *

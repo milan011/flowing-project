@@ -1,12 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.iocoder.yudao.module.fp.dal.mysql.flowing.FlowingMapper">
-
-    <!--
-        一般情况下，尽可能使用 Mapper 进行 CRUD 增删改查即可。
-        无法满足的场景，例如说多表关联查询，才使用 XML 编写 SQL。
-        代码生成器暂时只生成 Mapper XML 文件本身，更多推荐 MybatisX 快速开发插件来生成查询。
-        文档可见：https://www.iocoder.cn/MyBatis/x-plugins/
-     -->
-
+  <!-- 通用查询映射结果 -->
+  <resultMap id="BaseResultMap" type="cn.iocoder.yudao.module.fp.dal.dataobject.flowing.FlowingDO">
+    <id column="id" property="id" />
+    <result column="name" property="name" />
+    <result column="flowing_number" property="flowingNumber" />
+    <result column="acc_id" property="accId" />
+    <result column="pro_id" property="proId" />
+    <result column="con_id" property="conId" />
+    <result column="money" property="money" />
+    <result column="money_type" property="moneyType" />
+    <result column="cost_ype" property="costType" />
+    <result column="status" property="status" />
+  </resultMap>
+  <resultMap id="ResultMapHaveAccount" extends="BaseResultMap" type="cn.iocoder.yudao.module.fp.controller.admin.flowing.vo.FlowingRespVO">
+    <constructor>
+      <idArg column="id" javaType="int"/>
+    </constructor>
+    <association property="account">
+      <id property="id" column="acc_id"/>
+      <result property="name" column="name"/>
+    </association>
+  </resultMap>
+  <!--<select id="selectWithAccountPage" resultType="cn.iocoder.yudao.module.fp.controller.admin.flowing.vo.FlowingRespVO">
+    SELECT * FROM fp_flowing
+  </select>-->
+  <select id="selectWithAccountPage" resultMap="ResultMapHaveAccount">
+    SELECT
+      f.*,
+      b.*
+    FROM
+      fp_flowing f
+      left join fp_bank_account b on f.acc_id = b.id
+  </select>
 </mapper>
