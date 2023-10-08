@@ -45,12 +45,12 @@
       <el-table-column label="ID" align="center" prop="id" />
       <el-table-column label="名称" align="center" prop="name" />
       <el-table-column label="金额" align="center" prop="money">
-          <template slot-scope="scope">
+          <template v-slot="scope">
             {{ scope.row.money/100}}
           </template>
       </el-table-column>
       <el-table-column label="启用状态" align="center" prop="status">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <el-tag v-if="scope.row.status == 1" type="success">启用</el-tag>
           <el-tag v-if="scope.row.status == 0" type="info">禁用</el-tag>
         </template>

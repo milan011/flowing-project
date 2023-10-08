@@ -52,3 +52,16 @@ export function exportContractExcel(query) {
     responseType: 'blob'
   })
 }
+
+// 合同状态修改
+export function changeContractStatus(id, status) {
+  const data = {
+    id,
+    status
+  }
+  return request({
+    url: '/fp/contract/update-status',
+    method: 'put',
+    data: data
+  })
+}

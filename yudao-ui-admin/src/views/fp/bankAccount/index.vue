@@ -62,25 +62,25 @@
       <el-table-column label="账户" align="center" prop="name" />
       <el-table-column label="卡号" align="center" prop="accountNumber" />
       <el-table-column label="所属人/公司" align="center" prop="accountBelong">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           {{ accountBelongeReflect(scope.row.accountBelong) }}
         </template>
       </el-table-column>
       <el-table-column label="所属银行" align="center" prop="bank" />
       <el-table-column label="开户行" align="center" prop="bankBelong" />
       <el-table-column label="账户余额" align="center" prop="balance">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           {{ scope.row.balance/100}}
         </template>
       </el-table-column>
       <el-table-column label="启用状态" align="center" prop="status">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <el-tag v-if="scope.row.status == 1" type="success">启用</el-tag>
           <el-tag v-if="scope.row.status == 0" type="info">禁用</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="公/私" align="center" prop="mainBody">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           {{ mainBodyReflect(scope.row.mainBody) }}
         </template>
       </el-table-column>
