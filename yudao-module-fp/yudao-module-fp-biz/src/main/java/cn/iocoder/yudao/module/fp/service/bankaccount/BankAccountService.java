@@ -5,6 +5,7 @@ import javax.validation.*;
 import cn.iocoder.yudao.module.fp.controller.admin.bankaccount.vo.*;
 import cn.iocoder.yudao.module.fp.dal.dataobject.bankaccount.BankAccountDO;
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
+import cn.iocoder.yudao.module.fp.dal.dataobject.project.ProjectDO;
 
 /**
  * 银行账户 Service 接口
@@ -50,6 +51,12 @@ public interface BankAccountService {
      * @return 银行账户列表
      */
     List<BankAccountDO> getBankAccountList(Collection<Long> ids);
+
+    /**
+     * 获得有效账户列表
+     * @return 账户列表
+     */
+    List<BankAccountDO> getActiveBankAccountList();
 
     /**
      * 获得银行账户分页

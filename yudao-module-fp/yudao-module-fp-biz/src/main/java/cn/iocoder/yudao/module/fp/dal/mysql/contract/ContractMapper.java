@@ -48,4 +48,10 @@ public interface ContractMapper extends BaseMapperX<ContractDO> {
         return selectOne(ContractDO::getName, name);
     }
 
+    default List<ContractDO> selectActiveList() {
+        return selectList(new LambdaQueryWrapperX<ContractDO>()
+            .eqIfPresent(ContractDO::getStatus, 1)
+            .orderByDesc(ContractDO::getId));
+    }
+
 }

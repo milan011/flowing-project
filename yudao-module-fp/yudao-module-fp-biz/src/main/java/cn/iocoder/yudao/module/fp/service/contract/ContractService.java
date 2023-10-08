@@ -5,6 +5,7 @@ import javax.validation.*;
 import cn.iocoder.yudao.module.fp.controller.admin.contract.vo.*;
 import cn.iocoder.yudao.module.fp.dal.dataobject.contract.ContractDO;
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
+import cn.iocoder.yudao.module.fp.dal.dataobject.project.ProjectDO;
 
 /**
  * 合同 Service 接口
@@ -50,6 +51,12 @@ public interface ContractService {
      * @return 合同列表
      */
     List<ContractDO> getContractList(Collection<Long> ids);
+
+    /**
+     * 获得有效合同列表
+     * @return 合同列表
+     */
+    List<ContractDO> getActiveContractList();
 
     /**
      * 获得合同分页

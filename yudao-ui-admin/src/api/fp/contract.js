@@ -26,6 +26,14 @@ export function deleteContract(id) {
   })
 }
 
+// 获得active合同列表(关联明细用)
+export function getAcitveContract() {
+  return request({
+    url: '/fp/contract/list-active',
+    method: 'get'
+  })
+}
+
 // 获得合同
 export function getContract(id) {
   return request({

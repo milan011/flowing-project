@@ -34,6 +34,14 @@ export function getBankAccount(id) {
   })
 }
 
+// 获得active账户列表(关联明细用)
+export function getAcitveBankAccount() {
+  return request({
+    url: '/fp/bank-account/list-active',
+    method: 'get'
+  })
+}
+
 // 获得银行账户分页
 export function getBankAccountPage(query) {
   return request({

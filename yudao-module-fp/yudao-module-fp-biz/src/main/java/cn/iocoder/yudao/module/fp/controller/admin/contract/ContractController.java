@@ -1,6 +1,9 @@
 package cn.iocoder.yudao.module.fp.controller.admin.contract;
 
+import cn.iocoder.yudao.module.fp.controller.admin.project.vo.ProjectRespVO;
 import cn.iocoder.yudao.module.fp.controller.admin.project.vo.ProjectUpdateStatusReqVO;
+import cn.iocoder.yudao.module.fp.convert.project.ProjectConvert;
+import cn.iocoder.yudao.module.fp.dal.dataobject.project.ProjectDO;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import org.springframework.validation.annotation.Validated;
@@ -77,6 +80,14 @@ public class ContractController {
   @PreAuthorize("@ss.hasPermission('fp:contract:query')")
   public CommonResult<List<ContractRespVO>> getContractList(@RequestParam("ids") Collection<Long> ids) {
     List<ContractDO> list = contractService.getContractList(ids);
+    return success(ContractConvert.INSTANCE.convertList(list));
+  }
+
+  @GetMapping("/list-active")
+  @Operation(summary = "获得活动合同列表")
+  @PreAuthorize("@ss.hasPermission('fp:contract:query')")
+  public CommonResult<List<ContractRespVO>> getActiveContractList() {
+    List<ContractDO> list = contractService.getActiveContractList();
     return success(ContractConvert.INSTANCE.convertList(list));
   }
 

@@ -1,5 +1,8 @@
 package cn.iocoder.yudao.module.fp.controller.admin.bankaccount;
 
+import cn.iocoder.yudao.module.fp.controller.admin.project.vo.ProjectRespVO;
+import cn.iocoder.yudao.module.fp.convert.project.ProjectConvert;
+import cn.iocoder.yudao.module.fp.dal.dataobject.project.ProjectDO;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import org.springframework.validation.annotation.Validated;
@@ -76,6 +79,14 @@ public class BankAccountController {
     @PreAuthorize("@ss.hasPermission('fp:bank-account:query')")
     public CommonResult<List<BankAccountRespVO>> getBankAccountList(@RequestParam("ids") Collection<Long> ids) {
         List<BankAccountDO> list = bankAccountService.getBankAccountList(ids);
+        return success(BankAccountConvert.INSTANCE.convertList(list));
+    }
+
+    @GetMapping("/list-active")
+    @Operation(summary = "获得活动项目列表")
+    @PreAuthorize("@ss.hasPermission('fp:bank-account:query')")
+    public CommonResult<List<BankAccountRespVO>> getActiveBankAccountList() {
+        List<BankAccountDO> list = bankAccountService.getActiveBankAccountList();
         return success(BankAccountConvert.INSTANCE.convertList(list));
     }
 

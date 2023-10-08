@@ -77,6 +77,11 @@ public class ContractServiceImpl implements ContractService {
     }
 
     @Override
+    public List<ContractDO> getActiveContractList() {
+        return contractMapper.selectActiveList();
+    }
+
+    @Override
     public PageResult<ContractDO> getContractPage(ContractPageReqVO pageReqVO) {
         return contractMapper.selectPage(pageReqVO);
     }

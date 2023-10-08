@@ -6,6 +6,7 @@ import cn.iocoder.yudao.framework.common.pojo.PageResult;
 import cn.iocoder.yudao.framework.mybatis.core.query.LambdaQueryWrapperX;
 import cn.iocoder.yudao.framework.mybatis.core.mapper.BaseMapperX;
 import cn.iocoder.yudao.module.fp.dal.dataobject.bankaccount.BankAccountDO;
+import cn.iocoder.yudao.module.fp.dal.dataobject.project.ProjectDO;
 import org.apache.ibatis.annotations.Mapper;
 import cn.iocoder.yudao.module.fp.controller.admin.bankaccount.vo.*;
 
@@ -47,6 +48,12 @@ public interface BankAccountMapper extends BaseMapperX<BankAccountDO> {
 
     default BankAccountDO selectByName(String accountNumber) {
         return selectOne(BankAccountDO::getAccountNumber, accountNumber);
+    }
+
+    default List<BankAccountDO> selectActiveList() {
+        return selectList(new LambdaQueryWrapperX<BankAccountDO>()
+            .eqIfPresent(BankAccountDO::getStatus, 1)
+            .orderByDesc(BankAccountDO::getId));
     }
 
 }

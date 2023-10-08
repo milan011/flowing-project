@@ -111,29 +111,29 @@
         </el-form-item>
         <el-form-item label="所属账户" prop="accId">
           <el-select v-model="form.accId" placeholder="请选择所属账户">
-            <el-option label="请选择字典生成" value="" />
+            <el-option v-for="item in bankAccounts" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
         </el-form-item>
-        <el-form-item label="关联项目" prop="proId">
-          <el-select v-model="form.proId" placeholder="请选择关联项目表ID">
-            <el-option label="请选择字典生成" value="" />
+        <el-form-item label="所属项目" prop="proId">
+          <el-select v-model="form.proId" @change="projectChecked" placeholder="请选择所属项目">
+            <el-option v-for="item in projects" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
         </el-form-item>
-        <el-form-item label="关联合同" prop="conId">
-          <el-select v-model="form.conId" placeholder="请选择关联合同表ID">
-            <el-option label="请选择字典生成" value="" />
+        <el-form-item label="所属合同" prop="conId">
+          <el-select :disabled="!contractCheckAllow" v-model="form.conId" placeholder="请选择所属合同">
+            <el-option v-for="item in contrantsDelled" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
         </el-form-item>
         <el-form-item label="金额" prop="money">
           <el-input-number :precision="2" :controls="false" v-model="form.money" placeholder="请输入金额" />
         </el-form-item>
         <el-form-item label="资金类型" prop="moneyType">
-          <el-select v-model="form.moneyType" placeholder="请选择资金类型: 1->投资;2->回款;3->费用;9->其他">
+          <el-select v-model="form.moneyType" placeholder="请选择资金类型">
             <el-option v-for="(item, index) in money_type" :key="index" :label="item.label" :value="item.value" />
           </el-select>
         </el-form-item>
         <el-form-item label="费用类型" prop="costType">
-          <el-select v-model="form.costType" placeholder="请选择费用类型: 1->费用1;2->费用2;3->费用3;9->其他">
+          <el-select v-model="form.costType" placeholder="请选择费用类型">
             <el-option v-for="(item, index) in cost_type" :key="index" :label="item.label" :value="item.value" />
           </el-select>
         </el-form-item>
@@ -155,6 +155,10 @@
 <script>
 import { createFlowing, updateFlowing, deleteFlowing, getFlowing, getFlowingPage, exportFlowingExcel } from "@/api/fp/flowing";
 import { money_type, cost_type } from "@/utils/dict"
+import { getAcitveBankAccount } from "@/api/fp/bankAccount"
+import { getAcitveContract } from "@/api/fp/contract"
+import { getAcitveProject } from "@/api/fp/project"
+import loadTinymce from "@/utils/loadTinymce";
 
 export default {
   name: "Flowing",
@@ -168,6 +172,11 @@ export default {
       exportLoading: false,
       money_type: money_type,
       cost_type: cost_type,
+      bankAccounts: [],
+      contrants: [],
+      contrantsDelled: [],
+      projects: [],
+      contractCheckAllow: false,
       // 显示搜索条件
       showSearch: true,
       // 总条数
@@ -200,17 +209,18 @@ export default {
         name: [{ required: true, message: "名称不能为空", trigger: "blur" }],
         flowingNumber: [{ required: true, message: "流水号不能为空", trigger: "blur" }],
         accId: [{ required: true, message: "所属账户不能为空", trigger: "change" }],
-        proId: [{ required: true, message: "关联项目表ID不能为空", trigger: "change" }],
-        conId: [{ required: true, message: "关联合同表ID不能为空", trigger: "change" }],
+        proId: [{ required: true, message: "所属项目", trigger: "change" }],
+        conId: [{ required: true, message: "所属合同", trigger: "change" }],
         money: [{ required: true, message: "金额不能为空", trigger: "blur" }],
-        moneyType: [{ required: true, message: "资金类型: 1->投资;2->回款;3->费用;9->其他不能为空", trigger: "change" }],
-        costType: [{ required: true, message: "费用类型: 1->费用1;2->费用2;3->费用3;9->其他不能为空", trigger: "change" }],
-        status: [{ required: true, message: "状态：0->无效；1->有效不能为空", trigger: "blur" }],
+        moneyType: [{ required: true, message: "资金类型不能为空", trigger: "change" }],
+        costType: [{ required: true, message: "费用类型不能为空", trigger: "change" }],
+        status: [{ required: true, message: "状态不能为空", trigger: "blur" }],
       }
     };
   },
   created() {
     this.getList();
+    this.activeFetch();
   },
   methods: {
     /** 查询列表 */
@@ -257,6 +267,7 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
+      this.contractCheckAllow = false
       this.open = true;
       this.title = "添加流水明细";
     },
@@ -316,6 +327,33 @@ export default {
           this.$download.excel(response, '流水明细.xls');
           this.exportLoading = false;
         }).catch(() => {});
+    },
+    projectChecked(value){
+      console.log('projectChecked', value)
+      this.contractCheckAllow = (value !== null || true)
+      this.contractDell(value)
+
+      console.log('contractCheckAllow', this.contractCheckAllow)
+    },
+    contractDell(proId){
+      console.log('proId', proId)
+      this.contrantsDelled = this.contrants.filter((item,key,arr) => {
+        console.log(item)
+        return item.proId == proId;
+      })
+
+      console.log('contrantsDelled', this.contrantsDelled)
+    },
+    activeFetch(){
+      getAcitveBankAccount().then((respons)=>{
+        this.bankAccounts = respons.data
+      })
+      getAcitveProject().then((respons)=>{
+        this.projects = respons.data
+      })
+      getAcitveContract().then((respons)=>{
+        this.contrants = respons.data
+      })
     }
   }
 };

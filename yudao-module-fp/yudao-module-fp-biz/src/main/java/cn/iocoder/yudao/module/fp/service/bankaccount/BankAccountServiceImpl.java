@@ -1,5 +1,6 @@
 package cn.iocoder.yudao.module.fp.service.bankaccount;
 
+import cn.iocoder.yudao.module.fp.dal.dataobject.project.ProjectDO;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
@@ -88,6 +89,11 @@ public class BankAccountServiceImpl implements BankAccountService {
   @Override
   public List<BankAccountDO> getBankAccountList(BankAccountExportReqVO exportReqVO) {
     return bankAccountMapper.selectList(exportReqVO);
+  }
+
+  @Override
+  public List<BankAccountDO> getActiveBankAccountList() {
+    return bankAccountMapper.selectActiveList();
   }
 
   @Override
