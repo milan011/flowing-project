@@ -42,8 +42,8 @@ public class FlowingBaseVO {
     @NotNull(message = "资金类型: 1->投资;2->回款;3->费用;9->其他不能为空")
     private Integer moneyType;
 
-    @Schema(description = "费用类型: 1->费用1;2->费用2;3->费用3;9->其他", requiredMode = Schema.RequiredMode.REQUIRED, example = "2")
-    @NotNull(message = "费用类型: 1->费用1;2->费用2;3->费用3;9->其他不能为空")
+    @Schema(description = "费用类型: 1->费用1;2->费用2;3->费用3;9->其他", example = "2")
+    //@NotNull(message = "费用类型: 1->费用1;2->费用2;3->费用3;9->其他不能为空")
     private Integer costType;
 
     @Schema(description = "状态：0->无效；1->有效", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")

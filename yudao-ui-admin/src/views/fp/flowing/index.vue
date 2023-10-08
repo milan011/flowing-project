@@ -128,12 +128,12 @@
           <el-input-number :precision="2" :controls="false" v-model="form.money" placeholder="请输入金额" />
         </el-form-item>
         <el-form-item label="资金类型" prop="moneyType">
-          <el-select v-model="form.moneyType" placeholder="请选择资金类型">
+          <el-select v-model="form.moneyType" @change="moneyTypeChecked" placeholder="请选择资金类型">
             <el-option v-for="(item, index) in money_type" :key="index" :label="item.label" :value="item.value" />
           </el-select>
         </el-form-item>
         <el-form-item label="费用类型" prop="costType">
-          <el-select v-model="form.costType" placeholder="请选择费用类型">
+          <el-select :disabled="!costCheckAllow" v-model="form.costType" placeholder="请选择费用类型">
             <el-option v-for="(item, index) in cost_type" :key="index" :label="item.label" :value="item.value" />
           </el-select>
         </el-form-item>
@@ -177,6 +177,7 @@ export default {
       contrantsDelled: [],
       projects: [],
       contractCheckAllow: false,
+      costCheckAllow: false,
       // 显示搜索条件
       showSearch: true,
       // 总条数
@@ -213,7 +214,7 @@ export default {
         conId: [{ required: true, message: "所属合同", trigger: "change" }],
         money: [{ required: true, message: "金额不能为空", trigger: "blur" }],
         moneyType: [{ required: true, message: "资金类型不能为空", trigger: "change" }],
-        costType: [{ required: true, message: "费用类型不能为空", trigger: "change" }],
+        // costType: [{ required: true, message: "费用类型不能为空", trigger: "change" }],
         status: [{ required: true, message: "状态不能为空", trigger: "blur" }],
       }
     };
@@ -331,6 +332,7 @@ export default {
     projectChecked(value){
       console.log('projectChecked', value)
       this.contractCheckAllow = (value !== null || true)
+      this.form.conId = null
       this.contractDell(value)
 
       console.log('contractCheckAllow', this.contractCheckAllow)
@@ -343,6 +345,15 @@ export default {
       })
 
       console.log('contrantsDelled', this.contrantsDelled)
+    },
+    moneyTypeChecked(value){
+      this.form.costType = null
+      this.costCheckAllow = (value == 3)
+      if(value == 3){
+        this.$set(this.rules,'costType',[{ required: true, message: "费用类型不能为空", trigger: "change" }])
+      }else{
+        this.$set(this.rules,'costType',[{ required: false, message: "费用类型不能为空", trigger: "change" }])
+      }
     },
     activeFetch(){
       getAcitveBankAccount().then((respons)=>{
