@@ -70,13 +70,26 @@
       <el-table-column label="ID" align="center" prop="id" width="80px" />
       <el-table-column label="名称" align="center" prop="name" />
       <el-table-column label="流水号" align="center" prop="flowingNumber" />
-      <el-table-column label="所属账户" align="center" prop="accId" />
-      <el-table-column label="项目" align="center" prop="proId" />
-      <el-table-column label="合同" align="center" prop="conId" />
+      <el-table-column label="所属账户" align="center" prop="account.name" />
+      <el-table-column label="项目" align="center" prop="project.name" />
+      <el-table-column label="合同" align="center" prop="contract.name" />
       <el-table-column label="金额" align="center" prop="money" />
-      <el-table-column label="资金类型" align="center" prop="moneyType" />
-      <el-table-column label="费用类型" align="center" prop="costType"/>
-      <el-table-column label="状态" align="center" prop="status" />
+      <el-table-column label="资金类型" align="center" prop="moneyType">
+        <template v-slot="scope">
+          {{ moneyTypeReflect(scope.row.moneyType) }}
+        </template>
+      </el-table-column>
+      <el-table-column label="费用类型" align="center" prop="costType">
+        <template v-slot="scope">
+          {{ costTypeReflect(scope.row.costType) }}
+        </template>
+      </el-table-column>
+      <el-table-column label="状态" align="center" prop="status">
+        <template v-slot="scope">
+          <el-tag v-if="scope.row.status == 1" type="success">启用</el-tag>
+          <el-tag v-if="scope.row.status == 0" type="info">禁用</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="创建时间" align="center" prop="createTime">
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
@@ -154,7 +167,7 @@
 
 <script>
 import { createFlowing, updateFlowing, deleteFlowing, getFlowing, getFlowingPage, exportFlowingExcel } from "@/api/fp/flowing";
-import { money_type, cost_type } from "@/utils/dict"
+import {money_type, cost_type, account_belonge} from "@/utils/dict"
 import { getAcitveBankAccount } from "@/api/fp/bankAccount"
 import { getAcitveContract } from "@/api/fp/contract"
 import { getAcitveProject } from "@/api/fp/project"
@@ -365,6 +378,14 @@ export default {
       getAcitveContract().then((respons)=>{
         this.contrants = respons.data
       })
+    },
+    costTypeReflect(value){
+      let item = cost_type.find((item)=>item.value == value)
+      return item.label
+    },
+    moneyTypeReflect(value){
+      let item = money_type.find((item)=>item.value == value)
+      return item.label
     }
   }
 };

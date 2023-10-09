@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.iocoder.yudao.module.fp.dal.mysql.flowing.FlowingMapper">
   <!-- 通用查询映射结果 -->
-  <resultMap id="BaseResultMap" type="cn.iocoder.yudao.module.fp.dal.dataobject.flowing.FlowingDO">
+  <resultMap id="BaseResultMap" type="cn.iocoder.yudao.module.fp.controller.admin.flowing.vo.FlowingRespVO">
     <id column="id" property="id" />
     <result column="name" property="name" />
     <result column="flowing_number" property="flowingNumber" />
@@ -11,27 +11,93 @@
     <result column="con_id" property="conId" />
     <result column="money" property="money" />
     <result column="money_type" property="moneyType" />
-    <result column="cost_ype" property="costType" />
+    <result column="cost_type" property="costType" />
     <result column="status" property="status" />
+    <result column="f_create_time" property="createTime" />
+    <association property="account" column="acc_id" resultMap="accountResult" javaType="cn.iocoder.yudao.module.fp.dal.dataobject.bankaccount.BankAccountDO" />
+    <association property="project" column="pro_id" resultMap="projectResult" javaType="cn.iocoder.yudao.module.fp.dal.dataobject.project.ProjectDO" />
+    <association property="contract" column="con_id" resultMap="contractResult" javaType="cn.iocoder.yudao.module.fp.dal.dataobject.contract.ContractDO" />
   </resultMap>
-  <resultMap id="ResultMapHaveAccount" extends="BaseResultMap" type="cn.iocoder.yudao.module.fp.controller.admin.flowing.vo.FlowingRespVO">
+
+  <resultMap id="accountResult" type="cn.iocoder.yudao.module.fp.dal.dataobject.bankaccount.BankAccountDO">
+    <id column="acc_id" property="id" />
+    <result column="acc_name" property="name" />
+    <result column="account_number" property="accountNumber" />
+    <result column="account_belong" property="accountBelong" />
+    <result column="bank" property="bank" />
+    <result column="bank_belong" property="bankBelong" />
+    <result column="balance" property="balance" />
+    <result column="acc_status" property="status" />
+    <result column="main_body" property="mainBody" />
+    <result column="acc_remark" property="remark" />
+  </resultMap>
+  <resultMap id="projectResult" type="cn.iocoder.yudao.module.fp.dal.dataobject.project.ProjectDO">
+    <id column="pro_id" property="id" />
+    <result column="pro_name" property="name" />
+    <result column="pro_money" property="money" />
+    <result column="pro_status" property="status" />
+    <result column="pro_remark" property="remark" />
+  </resultMap>
+  <resultMap id="contractResult" type="cn.iocoder.yudao.module.fp.dal.dataobject.contract.ContractDO">
+    <id column="con_id" property="id" />
+    <result column="con_pro_id" property="proId" />
+    <result column="con_name" property="name" />
+    <result column="con_money" property="money" />
+    <result column="party_a" property="partyA" />
+    <result column="party_b" property="partyB" />
+    <result column="con_status" property="status" />
+    <result column="con_remark" property="remark" />
+  </resultMap>
+  <!--<resultMap id="ResultMapHaveAccount" extends="BaseResultMap" type="cn.iocoder.yudao.module.fp.controller.admin.flowing.vo.FlowingRespVO">
     <constructor>
       <idArg column="id" javaType="int"/>
     </constructor>
-    <association property="account">
-      <id property="id" column="acc_id"/>
-      <result property="name" column="name"/>
-    </association>
-  </resultMap>
+  </resultMap>-->
   <!--<select id="selectWithAccountPage" resultType="cn.iocoder.yudao.module.fp.controller.admin.flowing.vo.FlowingRespVO">
     SELECT * FROM fp_flowing
   </select>-->
-  <select id="selectWithAccountPage" resultMap="ResultMapHaveAccount">
+  <select id="selectWithAccountPage" resultMap="BaseResultMap">
     SELECT
-      f.*,
-      b.*
+    f.id,
+    f.name,
+    f.flowing_number,
+    f.acc_id,
+    f.pro_id,
+    f.con_id,
+    f.money,
+    f.money_type,
+    f.cost_type,
+    f.status,
+    f.create_time f_create_time,
+    b.id acc_id,
+    b.name acc_name,
+    b.account_number,
+    b.account_belong,
+    b.bank,
+    b.bank_belong,
+    b.balance,
+    b.status acc_status,
+    b.main_body,
+    b.remark acc_remark,
+    p.id pro_id,
+    p.name pro_name,
+    p.money pro_money,
+    p.status pro_status,
+    p.remark pro_remark,
+    c.id con_id,
+    c.pro_id con_pro_id,
+    c.name con_name,
+    c.money con_money,
+    c.party_a,
+    c.party_b,
+    c.status con_status,
+    c.remark con_remark
     FROM
       fp_flowing f
       left join fp_bank_account b on f.acc_id = b.id
+      left join fp_project p on f.pro_id = p.id
+      left join fp_contract c on f.con_id = c.id
+    <where>
+    </where>
   </select>
 </mapper>

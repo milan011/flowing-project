@@ -1,6 +1,9 @@
 package cn.iocoder.yudao.module.fp.controller.admin.flowing.vo;
 
 import cn.iocoder.yudao.module.fp.controller.admin.bankaccount.vo.BankAccountRespVO;
+import cn.iocoder.yudao.module.fp.dal.dataobject.bankaccount.BankAccountDO;
+import cn.iocoder.yudao.module.fp.dal.dataobject.contract.ContractDO;
+import cn.iocoder.yudao.module.fp.dal.dataobject.project.ProjectDO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -20,19 +23,13 @@ public class FlowingRespVO extends FlowingBaseVO {
     @Schema(description = "修改时间")
     private LocalDateTime updateTime;
 
-    /*@Schema(description = "所属账户")
-    private BankAccountRespVO account;*/
-    private Account account;
-
     @Schema(description = "所属账户")
-    @Data
-    public static class Account {
-        @Schema(description = "账户ID")
-        private Long id;
+    private BankAccountDO account;
 
-        @Schema(description = "账户名称")
-        private String name;
+    @Schema(description = "所属项目")
+    private ProjectDO project;
 
-    }
+    @Schema(description = "所属合同")
+    private ContractDO contract;
 
 }
