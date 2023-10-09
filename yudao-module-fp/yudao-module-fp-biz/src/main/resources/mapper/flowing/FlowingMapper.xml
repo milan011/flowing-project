@@ -98,6 +98,9 @@
       left join fp_project p on f.pro_id = p.id
       left join fp_contract c on f.con_id = c.id
     <where>
+      <if test="name != null">
+        f.name like  #{name}
+      </if>
     </where>
   </select>
 </mapper>

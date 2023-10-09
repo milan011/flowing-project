@@ -1,6 +1,8 @@
 package cn.iocoder.yudao.module.fp.service.flowing;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.iocoder.yudao.framework.mybatis.core.util.MyBatisUtils;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import org.springframework.validation.annotation.Validated;
@@ -79,8 +81,9 @@ public class FlowingServiceImpl implements FlowingService {
     @Override
     public PageResult<FlowingRespVO> getFlowingWithAccountPage(FlowingPageReqVO pageReqVO) {
         IPage<FlowingRespVO> mpPage = MyBatisUtils.buildPage(pageReqVO);
+        //IPage<FlowingRespVO> mpPage = new Page<>(pageReqVO.getPageNo(), pageReqVO.getPageSize());
         PageResult<FlowingRespVO> flowingPage = new PageResult<>();
-        List<FlowingRespVO> list = flowingMapper.selectWithAccountPage(mpPage);
+        List<FlowingRespVO> list = flowingMapper.selectWithAccountPage(pageReqVO.getName(), mpPage);
         flowingPage.setList(list);
         flowingPage.setTotal(mpPage.getTotal());
         return flowingPage;

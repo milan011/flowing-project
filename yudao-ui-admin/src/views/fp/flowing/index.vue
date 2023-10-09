@@ -205,8 +205,8 @@ export default {
       queryParams: {
         pageNo: 1,
         pageSize: 10,
-        name: null,
-        flowingNumber: null,
+        name: '流水',
+        flowingNumber: 2123,
         accId: null,
         proId: null,
         conId: null,

@@ -35,7 +35,7 @@ public interface FlowingMapper extends BaseMapperX<FlowingDO> {
                 .orderByDesc(FlowingDO::getId));
     }
 
-  List<FlowingRespVO> selectWithAccountPage(IPage<FlowingRespVO> page);
+  List<FlowingRespVO> selectWithAccountPage(String name, IPage<FlowingRespVO> page);
 
     default List<FlowingDO> selectList(FlowingExportReqVO reqVO) {
         return selectList(new LambdaQueryWrapperX<FlowingDO>()
