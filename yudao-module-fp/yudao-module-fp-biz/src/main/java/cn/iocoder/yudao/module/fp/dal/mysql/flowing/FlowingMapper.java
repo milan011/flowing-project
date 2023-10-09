@@ -19,37 +19,37 @@ import cn.iocoder.yudao.module.fp.controller.admin.flowing.vo.*;
  */
 @Mapper
 public interface FlowingMapper extends BaseMapperX<FlowingDO> {
-
-    default PageResult<FlowingDO> selectPage(FlowingPageReqVO reqVO) {
-        return selectPage(reqVO, new LambdaQueryWrapperX<FlowingDO>()
-                .likeIfPresent(FlowingDO::getName, reqVO.getName())
-                .eqIfPresent(FlowingDO::getFlowingNumber, reqVO.getFlowingNumber())
-                .eqIfPresent(FlowingDO::getAccId, reqVO.getAccId())
-                .eqIfPresent(FlowingDO::getProId, reqVO.getProId())
-                .eqIfPresent(FlowingDO::getConId, reqVO.getConId())
-                .eqIfPresent(FlowingDO::getMoney, reqVO.getMoney())
-                .eqIfPresent(FlowingDO::getMoneyType, reqVO.getMoneyType())
-                .eqIfPresent(FlowingDO::getCostType, reqVO.getCostType())
-                .eqIfPresent(FlowingDO::getStatus, reqVO.getStatus())
-                .betweenIfPresent(FlowingDO::getCreateTime, reqVO.getCreateTime())
-                .orderByDesc(FlowingDO::getId));
-    }
-
-  List<FlowingRespVO> selectWithAccountPage(String name, IPage<FlowingRespVO> page);
-
-    default List<FlowingDO> selectList(FlowingExportReqVO reqVO) {
-        return selectList(new LambdaQueryWrapperX<FlowingDO>()
-                .likeIfPresent(FlowingDO::getName, reqVO.getName())
-                .eqIfPresent(FlowingDO::getFlowingNumber, reqVO.getFlowingNumber())
-                .eqIfPresent(FlowingDO::getAccId, reqVO.getAccId())
-                .eqIfPresent(FlowingDO::getProId, reqVO.getProId())
-                .eqIfPresent(FlowingDO::getConId, reqVO.getConId())
-                .eqIfPresent(FlowingDO::getMoney, reqVO.getMoney())
-                .eqIfPresent(FlowingDO::getMoneyType, reqVO.getMoneyType())
-                .eqIfPresent(FlowingDO::getCostType, reqVO.getCostType())
-                .eqIfPresent(FlowingDO::getStatus, reqVO.getStatus())
-                .betweenIfPresent(FlowingDO::getCreateTime, reqVO.getCreateTime())
-                .orderByDesc(FlowingDO::getId));
-    }
-
+	
+	default PageResult<FlowingDO> selectPage(FlowingPageReqVO reqVO) {
+		return selectPage(reqVO, new LambdaQueryWrapperX<FlowingDO>()
+				.likeIfPresent(FlowingDO::getName, reqVO.getName())
+				.eqIfPresent(FlowingDO::getFlowingNumber, reqVO.getFlowingNumber())
+				.eqIfPresent(FlowingDO::getAccId, reqVO.getAccId())
+				.eqIfPresent(FlowingDO::getProId, reqVO.getProId())
+				.eqIfPresent(FlowingDO::getConId, reqVO.getConId())
+				.eqIfPresent(FlowingDO::getMoney, reqVO.getMoney())
+				.eqIfPresent(FlowingDO::getMoneyType, reqVO.getMoneyType())
+				.eqIfPresent(FlowingDO::getCostType, reqVO.getCostType())
+				.eqIfPresent(FlowingDO::getStatus, reqVO.getStatus())
+				.betweenIfPresent(FlowingDO::getCreateTime, reqVO.getCreateTime())
+				.orderByDesc(FlowingDO::getId));
+	}
+	
+	List<FlowingRespVO> selectWithAccountPage(IPage<FlowingRespVO> page, FlowingPageReqVO pageReqVO);
+	
+	default List<FlowingDO> selectList(FlowingExportReqVO reqVO) {
+		return selectList(new LambdaQueryWrapperX<FlowingDO>()
+				.likeIfPresent(FlowingDO::getName, reqVO.getName())
+				.eqIfPresent(FlowingDO::getFlowingNumber, reqVO.getFlowingNumber())
+				.eqIfPresent(FlowingDO::getAccId, reqVO.getAccId())
+				.eqIfPresent(FlowingDO::getProId, reqVO.getProId())
+				.eqIfPresent(FlowingDO::getConId, reqVO.getConId())
+				.eqIfPresent(FlowingDO::getMoney, reqVO.getMoney())
+				.eqIfPresent(FlowingDO::getMoneyType, reqVO.getMoneyType())
+				.eqIfPresent(FlowingDO::getCostType, reqVO.getCostType())
+				.eqIfPresent(FlowingDO::getStatus, reqVO.getStatus())
+				.betweenIfPresent(FlowingDO::getCreateTime, reqVO.getCreateTime())
+				.orderByDesc(FlowingDO::getId));
+	}
+	
 }

@@ -83,7 +83,7 @@ public class FlowingServiceImpl implements FlowingService {
         IPage<FlowingRespVO> mpPage = MyBatisUtils.buildPage(pageReqVO);
         //IPage<FlowingRespVO> mpPage = new Page<>(pageReqVO.getPageNo(), pageReqVO.getPageSize());
         PageResult<FlowingRespVO> flowingPage = new PageResult<>();
-        List<FlowingRespVO> list = flowingMapper.selectWithAccountPage(pageReqVO.getName(), mpPage);
+        List<FlowingRespVO> list = flowingMapper.selectWithAccountPage(mpPage, pageReqVO);
         flowingPage.setList(list);
         flowingPage.setTotal(mpPage.getTotal());
         return flowingPage;

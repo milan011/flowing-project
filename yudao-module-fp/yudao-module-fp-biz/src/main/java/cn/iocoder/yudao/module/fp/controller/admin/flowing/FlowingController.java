@@ -1,5 +1,6 @@
 package cn.iocoder.yudao.module.fp.controller.admin.flowing;
 
+import cn.hutool.core.collection.CollUtil;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import org.springframework.validation.annotation.Validated;
@@ -83,11 +84,17 @@ public class FlowingController {
     @Operation(summary = "获得流水明细分页")
     @PreAuthorize("@ss.hasPermission('fp:flowing:query')")
     public CommonResult<PageResult<FlowingRespVO>> getFlowingPage(@Valid FlowingPageReqVO pageVO) {
-        //PageResult<FlowingDO> pageResult = flowingService.getFlowingPage(pageVO);
-        PageResult<FlowingRespVO> pageResult = flowingService.getFlowingWithAccountPage(pageVO);
+        PageResult<FlowingDO> pageResult = flowingService.getFlowingPage(pageVO);
+    
+        if (CollUtil.isEmpty(pageResult.getList())) {
+            return success(new PageResult<>(pageResult.getTotal())); // 返回空
+        }
+        
+        
+        //PageResult<FlowingRespVO> pageResult = flowingService.getFlowingWithAccountPage(pageVO);
 
-        //return success(FlowingConvert.INSTANCE.convertPage(pageResult));
-        return success(pageResult);
+        return success(FlowingConvert.INSTANCE.convertPage(pageResult));
+        //return success(pageResult);
     }
 
     @GetMapping("/export-excel")

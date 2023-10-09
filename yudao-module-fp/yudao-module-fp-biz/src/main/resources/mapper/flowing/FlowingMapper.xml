@@ -56,7 +56,7 @@
   <!--<select id="selectWithAccountPage" resultType="cn.iocoder.yudao.module.fp.controller.admin.flowing.vo.FlowingRespVO">
     SELECT * FROM fp_flowing
   </select>-->
-  <select id="selectWithAccountPage" resultMap="BaseResultMap">
+  <select id="selectWithAccountPage" parameterType="map" resultMap="BaseResultMap">
     SELECT
     f.id,
     f.name,
