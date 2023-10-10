@@ -1,6 +1,8 @@
 package cn.iocoder.yudao.module.fp.controller.admin.flowing;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.iocoder.yudao.module.fp.dal.dataobject.bankaccount.BankAccountDO;
+import cn.iocoder.yudao.module.fp.service.bankaccount.BankAccountService;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import org.springframework.validation.annotation.Validated;
@@ -22,6 +24,8 @@ import static cn.iocoder.yudao.framework.common.pojo.CommonResult.success;
 import cn.iocoder.yudao.framework.excel.core.util.ExcelUtils;
 
 import cn.iocoder.yudao.framework.operatelog.core.annotations.OperateLog;
+
+import static cn.iocoder.yudao.framework.common.util.collection.CollectionUtils.convertList;
 import static cn.iocoder.yudao.framework.operatelog.core.enums.OperateTypeEnum.*;
 
 import cn.iocoder.yudao.module.fp.controller.admin.flowing.vo.*;
@@ -37,6 +41,9 @@ public class FlowingController {
 
     @Resource
     private FlowingService flowingService;
+    
+    @Resource
+    private BankAccountService accountService;
 
     @PostMapping("/create")
     @Operation(summary = "创建流水明细")
@@ -89,11 +96,31 @@ public class FlowingController {
         if (CollUtil.isEmpty(pageResult.getList())) {
             return success(new PageResult<>(pageResult.getTotal())); // 返回空
         }
-        
+    
+        // 获得拼接需要的数据
+        Collection<Long> accIds = convertList(pageResult.getList(), FlowingDO::getAccId);
+        Map<Long, BankAccountDO> accountMap = accountService.getAccountMap(accIds);
+    
+        // 拼接结果返回
+        List<FlowingRespVO> flowingList = new ArrayList<>(pageResult.getList().size());
+    
+        /*pageResult.getList().forEach(user -> {
+            UserPageItemRespVO respVO = UserConvert.INSTANCE.convert(user);
+            respVO.setDept(UserConvert.INSTANCE.convert(deptMap.get(user.getDeptId())));
+            userList.add(respVO);
+        });*/
+    
+        pageResult.getList().forEach(flowing -> {
+            FlowingRespVO respVO = FlowingConvert.INSTANCE.convert(flowing);
+            respVO.setAccount(accountMap.get(flowing.getAccId()));
+            flowingList.add(respVO);
+        });
+    
+        return success(new PageResult<>(flowingList, pageResult.getTotal()));
         
         //PageResult<FlowingRespVO> pageResult = flowingService.getFlowingWithAccountPage(pageVO);
 
-        return success(FlowingConvert.INSTANCE.convertPage(pageResult));
+        //return success(FlowingConvert.INSTANCE.convertPage(pageResult));
         //return success(pageResult);
     }
 

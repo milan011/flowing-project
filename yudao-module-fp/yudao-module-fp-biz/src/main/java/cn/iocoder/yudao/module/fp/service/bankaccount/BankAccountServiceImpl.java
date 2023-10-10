@@ -1,5 +1,6 @@
 package cn.iocoder.yudao.module.fp.service.bankaccount;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.iocoder.yudao.module.fp.dal.dataobject.project.ProjectDO;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
@@ -126,6 +127,14 @@ public class BankAccountServiceImpl implements BankAccountService {
     if (!bankAccount.getId().equals(id)) {
       throw exception(BANK_ACCOUNT_NAME_DUPLICATE);
     }
+  }
+  
+  @Override
+  public List<BankAccountDO> getAccountList(Collection<Long> ids) {
+    if (CollUtil.isEmpty(ids)) {
+      return Collections.emptyList();
+    }
+    return bankAccountMapper.selectBatchIds(ids);
   }
 
 }
