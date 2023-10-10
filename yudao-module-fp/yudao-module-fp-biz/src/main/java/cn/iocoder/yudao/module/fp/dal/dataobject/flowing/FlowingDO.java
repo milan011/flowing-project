@@ -58,6 +58,7 @@ public class FlowingDO extends BaseDO {
     /**
      * 费用类型: 1->费用1;2->费用2;3->费用3;9->其他
      */
+    @TableField(updateStrategy = FieldStrategy.IGNORED)
     private Integer costType;
     /**
      * 状态：0->无效；1->有效

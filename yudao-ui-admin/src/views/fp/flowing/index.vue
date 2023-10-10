@@ -74,16 +74,17 @@
       <el-table-column label="项目" align="center" prop="project.name" />
       <el-table-column label="合同" align="center" prop="contract.name" />
       <el-table-column label="金额" align="center" prop="money" />
-      <el-table-column label="资金类型" align="center" prop="moneyType">
+      <el-table-column label="资金信息" align="center" prop="moneyType">
         <template v-slot="scope">
           {{ moneyTypeReflect(scope.row.moneyType) }}
+          <el-tag v-if="scope.row.moneyType == 3" type="info">{{ costTypeReflect(scope.row.costType) }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="费用类型" align="center" prop="costType">
+      <!--<el-table-column label="费用类型" align="center" prop="costType">
         <template v-slot="scope">
           {{ costTypeReflect(scope.row.costType) }}
         </template>
-      </el-table-column>
+      </el-table-column>-->
       <el-table-column label="状态" align="center" prop="status">
         <template v-slot="scope">
           <el-tag v-if="scope.row.status == 1" type="success">启用</el-tag>
@@ -102,6 +103,8 @@
       </el-table-column>-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="120px">
         <template v-slot="scope">
+          <el-button v-if="scope.row.moneyType == 2" size="mini" type="text" icon="el-icon-edit" @click="handleCreateVirtually(scope.row)"
+                     v-hasPermi="['fp:flowing:update']">虚拟</el-button>
           <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
                      v-hasPermi="['fp:flowing:update']">修改</el-button>
           <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
@@ -294,6 +297,23 @@ export default {
         this.open = true;
         this.title = "修改流水明细";
       });
+    },
+    /*创建虚拟明细*/
+    handleCreateVirtually(row){
+      console.log('创建虚拟明细', row)
+      const params = {
+        flowingNumber: row.flowingNumber,
+        accId: row.accId,
+        proId: row.proId,
+        conId: row.conId,
+        moneyType: 3,
+        costType: undefined,
+      }
+      this.reset();
+      this.form = Object.assign(params, this.form);
+      console.log('this.form', this.form)
+      this.open = true;
+      this.title = "虚拟明细";
     },
     /** 提交按钮 */
     submitForm() {

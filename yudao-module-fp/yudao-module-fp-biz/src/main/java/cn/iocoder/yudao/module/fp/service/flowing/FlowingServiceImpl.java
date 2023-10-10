@@ -46,6 +46,10 @@ public class FlowingServiceImpl implements FlowingService {
         validateFlowingExists(updateReqVO.getId());
         // 更新
         FlowingDO updateObj = FlowingConvert.INSTANCE.convert(updateReqVO);
+        
+        if(!updateObj.getMoneyType().equals(3)){
+            updateObj.setCostType(null);
+        }
         flowingMapper.updateById(updateObj);
     }
 
