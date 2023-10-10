@@ -70,9 +70,9 @@
       <el-table-column label="ID" align="center" prop="id" width="80px" />
       <el-table-column label="名称" align="center" prop="name" />
       <el-table-column label="流水号" align="center" prop="flowingNumber" />
-      <el-table-column label="所属账户" align="center" prop="accId" />
-      <el-table-column label="项目" align="center" prop="proId" />
-      <el-table-column label="合同" align="center" prop="conId" />
+      <el-table-column label="所属账户" align="center" prop="account.name" />
+      <el-table-column label="项目" align="center" prop="project.name" />
+      <el-table-column label="合同" align="center" prop="contract.name" />
       <el-table-column label="金额" align="center" prop="money" />
       <el-table-column label="资金类型" align="center" prop="moneyType">
         <template v-slot="scope">

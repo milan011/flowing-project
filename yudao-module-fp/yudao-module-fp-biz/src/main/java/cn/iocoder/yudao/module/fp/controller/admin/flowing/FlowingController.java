@@ -2,7 +2,11 @@ package cn.iocoder.yudao.module.fp.controller.admin.flowing;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.iocoder.yudao.module.fp.dal.dataobject.bankaccount.BankAccountDO;
+import cn.iocoder.yudao.module.fp.dal.dataobject.contract.ContractDO;
+import cn.iocoder.yudao.module.fp.dal.dataobject.project.ProjectDO;
 import cn.iocoder.yudao.module.fp.service.bankaccount.BankAccountService;
+import cn.iocoder.yudao.module.fp.service.contract.ContractService;
+import cn.iocoder.yudao.module.fp.service.project.ProjectService;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import org.springframework.validation.annotation.Validated;
@@ -44,6 +48,12 @@ public class FlowingController {
     
     @Resource
     private BankAccountService accountService;
+    
+    @Resource
+    private ProjectService projectService;
+    
+    @Resource
+    private ContractService contractService;
 
     @PostMapping("/create")
     @Operation(summary = "创建流水明细")
@@ -101,6 +111,12 @@ public class FlowingController {
         Collection<Long> accIds = convertList(pageResult.getList(), FlowingDO::getAccId);
         Map<Long, BankAccountDO> accountMap = accountService.getAccountMap(accIds);
     
+        Collection<Long> conIds = convertList(pageResult.getList(), FlowingDO::getConId);
+        Map<Long, ContractDO> contractMap = contractService.getContractMap(conIds);
+    
+        Collection<Long> proIds = convertList(pageResult.getList(), FlowingDO::getProId);
+        Map<Long, ProjectDO> projectMap = projectService.getProjectMap(proIds);
+    
         // 拼接结果返回
         List<FlowingRespVO> flowingList = new ArrayList<>(pageResult.getList().size());
     
@@ -113,6 +129,8 @@ public class FlowingController {
         pageResult.getList().forEach(flowing -> {
             FlowingRespVO respVO = FlowingConvert.INSTANCE.convert(flowing);
             respVO.setAccount(accountMap.get(flowing.getAccId()));
+            respVO.setContract(contractMap.get(flowing.getConId()));
+            respVO.setProject(projectMap.get(flowing.getProId()));
             flowingList.add(respVO);
         });
     

@@ -2,7 +2,11 @@ package cn.iocoder.yudao.module.fp.service.contract;
 
 import java.util.*;
 import javax.validation.*;
+
+import cn.hutool.core.collection.CollUtil;
+import cn.iocoder.yudao.framework.common.util.collection.CollectionUtils;
 import cn.iocoder.yudao.module.fp.controller.admin.contract.vo.*;
+import cn.iocoder.yudao.module.fp.dal.dataobject.bankaccount.BankAccountDO;
 import cn.iocoder.yudao.module.fp.dal.dataobject.contract.ContractDO;
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
 import cn.iocoder.yudao.module.fp.dal.dataobject.project.ProjectDO;
@@ -81,5 +85,19 @@ public interface ContractService {
      * @param status 状态
      */
     void updateContractStatus(Long id, Integer status);
-
+    
+    /**
+     * 获得指定编号的账号 Map
+     *
+     * @param ids 账号数组
+     * @return 账号 Map
+     */
+    default Map<Long, ContractDO> getContractMap(Collection<Long> ids) {
+        if (CollUtil.isEmpty(ids)) {
+            return Collections.emptyMap();
+        }
+        List<ContractDO> list = getContractList(ids);
+        return CollectionUtils.convertMap(list, ContractDO::getId);
+    }
+    
 }

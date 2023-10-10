@@ -1,5 +1,7 @@
 package cn.iocoder.yudao.module.fp.service.contract;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.iocoder.yudao.module.fp.dal.dataobject.bankaccount.BankAccountDO;
 import cn.iocoder.yudao.module.fp.dal.dataobject.project.ProjectDO;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
@@ -121,5 +123,4 @@ public class ContractServiceImpl implements ContractService {
             throw exception(CONTRACT_DUPLICATE);
         }
     }
-
 }

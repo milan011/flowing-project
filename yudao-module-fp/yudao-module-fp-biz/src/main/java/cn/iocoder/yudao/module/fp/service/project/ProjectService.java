@@ -2,7 +2,11 @@ package cn.iocoder.yudao.module.fp.service.project;
 
 import java.util.*;
 import javax.validation.*;
+
+import cn.hutool.core.collection.CollUtil;
+import cn.iocoder.yudao.framework.common.util.collection.CollectionUtils;
 import cn.iocoder.yudao.module.fp.controller.admin.project.vo.*;
+import cn.iocoder.yudao.module.fp.dal.dataobject.bankaccount.BankAccountDO;
 import cn.iocoder.yudao.module.fp.dal.dataobject.project.ProjectDO;
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
 
@@ -80,5 +84,19 @@ public interface ProjectService {
      * @param status 状态
      */
     void updateProjectStatus(Long id, Integer status);
+    
+    /**
+     * 获得指定编号的项目 Map
+     *
+     * @param ids 项目数组
+     * @return 项目 Map
+     */
+    default Map<Long, ProjectDO> getProjectMap(Collection<Long> ids) {
+        if (CollUtil.isEmpty(ids)) {
+            return Collections.emptyMap();
+        }
+        List<ProjectDO> list = getProjectList(ids);
+        return CollectionUtils.convertMap(list, ProjectDO::getId);
+    }
 
 }
