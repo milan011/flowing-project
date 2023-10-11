@@ -65,4 +65,9 @@ public class FlowingDO extends BaseDO {
      */
     private Integer status;
 
+    /**
+     * 虚拟明细：0->虚拟；1->真实
+     */
+    private Integer virtually;
+
 }

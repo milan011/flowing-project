@@ -39,7 +39,7 @@ public class FlowingBaseVO {
     private Long money;
 
     @Schema(description = "资金类型: 1->投资;2->回款;3->费用;9->其他", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
-    @NotNull(message = "资金类型: 1->投资;2->回款;3->费用;9->其他不能为空")
+    //@NotNull(message = "资金类型: 1->投资;2->回款;3->费用;9->其他不能为空")
     private Integer moneyType;
 
     @Schema(description = "费用类型: 1->费用1;2->费用2;3->费用3;9->其他", example = "2")
@@ -49,5 +49,9 @@ public class FlowingBaseVO {
     @Schema(description = "状态：0->无效；1->有效", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
     @NotNull(message = "状态：0->无效；1->有效不能为空")
     private Integer status;
+
+    @Schema(description = "虚拟：0->虚拟；1->真实", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
+    @NotNull(message = "虚拟：0->虚拟；1->真实不能为空")
+    private Integer virtually;
 
 }

@@ -11,17 +11,17 @@
       </el-form-item>
       <el-form-item label="所属账户" prop="accId">
         <el-select v-model="queryParams.accId" placeholder="请选择所属账户" clearable size="small">
-          <el-option label="请选择字典生成" value="" />
+          <el-option v-for="item in bankAccounts" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
       </el-form-item>
       <el-form-item label="项目" prop="proId">
         <el-select v-model="queryParams.proId" placeholder="请选择关联项目" clearable size="small">
-          <el-option label="请选择字典生成" value="" />
+          <el-option v-for="item in projects" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
       </el-form-item>
       <el-form-item label="合同" prop="conId">
         <el-select v-model="queryParams.conId" placeholder="请选择关联合同" clearable size="small">
-          <el-option label="请选择字典生成" value="" />
+          <el-option v-for="item in contrants" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
       </el-form-item>
       <el-form-item label="金额" prop="money">
@@ -29,19 +29,19 @@
       </el-form-item>
       <el-form-item label="资金类型" prop="moneyType">
         <el-select v-model="queryParams.moneyType" placeholder="请选择资金类型" clearable size="small">
-          <el-option label="请选择字典生成" value="" />
+          <el-option v-for="(item, index) in money_type" :key="index" :label="item.label" :value="item.value" />
         </el-select>
       </el-form-item>
       <el-form-item label="费用类型" prop="costType">
         <el-select v-model="queryParams.costType" placeholder="请选择费用类型" clearable size="small">
-          <el-option label="请选择字典生成" value="" />
+          <el-option v-for="(item, index) in cost_type" :key="index" :label="item.label" :value="item.value" />
         </el-select>
       </el-form-item>
-      <el-form-item label="状态" prop="status">
+<!--      <el-form-item label="状态" prop="status">
         <el-select v-model="queryParams.status" placeholder="请选择状态" clearable size="small">
           <el-option label="请选择字典生成" value="" />
         </el-select>
-      </el-form-item>
+      </el-form-item>-->
       <el-form-item label="创建时间" prop="createTime">
         <el-date-picker v-model="queryParams.createTime" style="width: 240px" value-format="yyyy-MM-dd HH:mm:ss" type="daterange"
                         range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" :default-time="['00:00:00', '23:59:59']" />
@@ -85,10 +85,10 @@
           {{ costTypeReflect(scope.row.costType) }}
         </template>
       </el-table-column>-->
-      <el-table-column label="状态" align="center" prop="status">
+      <el-table-column label="虚拟" align="center" prop="virtually">
         <template v-slot="scope">
-          <el-tag v-if="scope.row.status == 1" type="success">启用</el-tag>
-          <el-tag v-if="scope.row.status == 0" type="info">禁用</el-tag>
+          <el-tag v-if="scope.row.virtually == 1" type="success">真实</el-tag>
+          <el-tag v-if="scope.row.virtually == 0" type="info">虚拟</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="创建时间" align="center" prop="createTime">
@@ -103,9 +103,11 @@
       </el-table-column>-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="120px">
         <template v-slot="scope">
-          <el-button v-if="scope.row.moneyType == 2" size="mini" type="text" icon="el-icon-edit" @click="handleCreateVirtually(scope.row)"
+          <el-button v-if="scope.row.moneyType == 2 && scope.row.virtually == 1" size="mini" type="text" icon="el-icon-edit" @click="handleCreateVirtually(scope.row)"
                      v-hasPermi="['fp:flowing:update']">虚拟</el-button>
-          <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
+<!--          <el-button  v-if="scope.row.virtually == 0" size="mini" type="text" icon="el-icon-edit" @click="handleUpdateVirtually(scope.row)"
+                     v-hasPermi="['fp:flowing:update']">修改</el-button>-->
+          <el-button v-if="scope.row.virtually == 1" size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
                      v-hasPermi="['fp:flowing:update']">修改</el-button>
           <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
                      v-hasPermi="['fp:flowing:delete']">删除</el-button>
@@ -165,11 +167,30 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+    <el-dialog title="虚拟明细" :visible.sync="openVirtually" width="500px" v-dialogDrag append-to-body>
+      <el-form ref="formVirtually" :model="formVirtually" :rules="virtuallyrules" label-width="80px">
+        <el-form-item label="名称" prop="name">
+          <el-input v-model="formVirtually.name" placeholder="请输入名称" />
+        </el-form-item>
+        <el-form-item label="金额" prop="money">
+          <el-input-number :precision="2" :controls="false" v-model="formVirtually.money" placeholder="请输入金额" />
+        </el-form-item>
+        <el-form-item label="费用类型" prop="costType">
+          <el-select  v-model="formVirtually.costType" placeholder="请选择费用类型">
+            <el-option v-for="(item, index) in cost_type" :key="index" :label="item.label" :value="item.value" />
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitFormVirtually">确 定</el-button>
+        <el-button @click="cancelVirtually">取 消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { createFlowing, updateFlowing, deleteFlowing, getFlowing, getFlowingPage, exportFlowingExcel } from "@/api/fp/flowing";
+import { createFlowing, updateFlowing, deleteFlowing, getFlowing, getFlowingPage, exportFlowingExcel, createVirtuallyFlowing } from "@/api/fp/flowing";
 import {money_type, cost_type, account_belonge} from "@/utils/dict"
 import { getAcitveBankAccount } from "@/api/fp/bankAccount"
 import { getAcitveContract } from "@/api/fp/contract"
@@ -204,6 +225,7 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
+      openVirtually: false,
       // 查询参数
       queryParams: {
         pageNo: 1,
@@ -221,6 +243,7 @@ export default {
       },
       // 表单参数
       form: {},
+      formVirtually: {},
       // 表单校验
       rules: {
         name: [{ required: true, message: "名称不能为空", trigger: "blur" }],
@@ -232,6 +255,11 @@ export default {
         moneyType: [{ required: true, message: "资金类型不能为空", trigger: "change" }],
         // costType: [{ required: true, message: "费用类型不能为空", trigger: "change" }],
         status: [{ required: true, message: "状态不能为空", trigger: "blur" }],
+      },
+      virtuallyrules: {
+        name: [{ required: true, message: "名称不能为空", trigger: "blur" }],
+        money: [{ required: true, message: "金额不能为空", trigger: "blur" }],
+        costType: [{ required: true, message: "费用类型不能为空", trigger: "change" }]
       }
     };
   },
@@ -255,6 +283,9 @@ export default {
       this.open = false;
       this.reset();
     },
+    cancelVirtually(){
+      this.openVirtually = false;
+    },
     /** 表单重置 */
     reset() {
       this.form = {
@@ -268,8 +299,24 @@ export default {
         moneyType: undefined,
         costType: undefined,
         status: 1,
+        virtually: 1,
       };
       this.resetForm("form");
+    },
+    resetVirtually(){
+      this.formVirtually = {
+        id: undefined,
+        name: undefined,
+        flowingNumber: undefined,
+        accId: undefined,
+        proId: undefined,
+        conId: undefined,
+        money: undefined,
+        moneyType: undefined,
+        costType: undefined,
+        status: 1,
+      };
+      this.resetForm("formVirtually");
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -298,22 +345,33 @@ export default {
         this.title = "修改流水明细";
       });
     },
+    /*handleUpdateVirtually(row){
+      console.log('修改虚拟明细', row)
+      this.resetVirtually();
+      const id = row.id;
+      getFlowing(id).then(response => {
+        this.formVirtually = response.data;
+        this.openVirtually = true;
+        this.title = "修改虚拟明细";
+      });
+    },*/
     /*创建虚拟明细*/
     handleCreateVirtually(row){
       console.log('创建虚拟明细', row)
+      this.resetVirtually();
       const params = {
+        name: undefined,
         flowingNumber: row.flowingNumber,
         accId: row.accId,
         proId: row.proId,
         conId: row.conId,
-        moneyType: 3,
         costType: undefined,
+        money: undefined,
+        virtually: 0,
       }
-      this.reset();
-      this.form = Object.assign(params, this.form);
-      console.log('this.form', this.form)
-      this.open = true;
-      this.title = "虚拟明细";
+      this.formVirtually = Object.assign(this.formVirtually, params);
+      console.log('this.formVirtually', this.formVirtually)
+      this.openVirtually = true;
     },
     /** 提交按钮 */
     submitForm() {
@@ -334,6 +392,31 @@ export default {
         createFlowing(this.form).then(response => {
           this.$modal.msgSuccess("新增成功");
           this.open = false;
+          this.getList();
+        });
+      });
+    },
+    submitFormVirtually(){
+      console.log('虚拟明细', this.formVirtually)
+      this.$refs["formVirtually"].validate(valid => {
+        if (!valid) {
+          // noinspection UnnecessaryReturnStatementJS
+          return;
+        }
+        console.log('虚拟明细', this.formVirtually)
+        // 修改的提交
+        /*if (this.formVirtually.id != null) {
+          updateVirtuallyFlowing(this.formVirtually).then(response => {
+            this.$modal.msgSuccess("修改成功");
+            this.openVirtually = false;
+            this.getList();
+          });
+          return;
+        }*/
+        // 添加的提交
+        createVirtuallyFlowing(this.formVirtually).then(response => {
+          this.$modal.msgSuccess("新增成功");
+          this.openVirtually = false;
           this.getList();
         });
       });
