@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50726
 File Encoding         : 65001
 
-Date: 2023-10-11 15:56:40
+Date: 2023-10-11 16:04:40
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -3744,7 +3744,7 @@ CREATE TABLE `system_oauth2_access_token` (
   `deleted` bit(1) NOT NULL DEFAULT b'0' COMMENT '是否删除',
   `tenant_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '租户编号',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=2813 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='OAuth2 访问令牌';
+) ENGINE=InnoDB AUTO_INCREMENT=2814 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='OAuth2 访问令牌';
 
 -- ----------------------------
 -- Records of system_oauth2_access_token
@@ -3840,7 +3840,8 @@ INSERT INTO `system_oauth2_access_token` VALUES ('2808', '1', '2', '8104508ece65
 INSERT INTO `system_oauth2_access_token` VALUES ('2809', '1', '2', 'b5f1695727fe4c65a5b4039f7db68968', 'fd6dc483729b4e9a85cfd40d94f2a7f1', 'default', null, '2023-10-11 14:25:18', null, '2023-10-11 13:55:18', null, '2023-10-11 14:27:14', '', '0');
 INSERT INTO `system_oauth2_access_token` VALUES ('2810', '1', '2', '28474318c4364ec3906253a21c8f6c5d', 'fd6dc483729b4e9a85cfd40d94f2a7f1', 'default', null, '2023-10-11 14:57:14', null, '2023-10-11 14:27:14', null, '2023-10-11 14:58:49', '', '0');
 INSERT INTO `system_oauth2_access_token` VALUES ('2811', '1', '2', '501b3360056e48fcbb2eb1dc261ebc1a', 'fd6dc483729b4e9a85cfd40d94f2a7f1', 'default', null, '2023-10-11 15:28:49', null, '2023-10-11 14:58:49', null, '2023-10-11 15:29:14', '', '0');
-INSERT INTO `system_oauth2_access_token` VALUES ('2812', '1', '2', '7f2c80b312424631ae41c1a29df962c8', 'fd6dc483729b4e9a85cfd40d94f2a7f1', 'default', null, '2023-10-11 15:59:14', null, '2023-10-11 15:29:14', null, '2023-10-11 15:29:14', '\0', '0');
+INSERT INTO `system_oauth2_access_token` VALUES ('2812', '1', '2', '7f2c80b312424631ae41c1a29df962c8', 'fd6dc483729b4e9a85cfd40d94f2a7f1', 'default', null, '2023-10-11 15:59:14', null, '2023-10-11 15:29:14', null, '2023-10-11 16:00:13', '', '0');
+INSERT INTO `system_oauth2_access_token` VALUES ('2813', '1', '2', 'a539189a660047129b37fee4e0091388', 'fd6dc483729b4e9a85cfd40d94f2a7f1', 'default', null, '2023-10-11 16:30:13', null, '2023-10-11 16:00:13', null, '2023-10-11 16:00:13', '\0', '0');
 
 -- ----------------------------
 -- Table structure for system_oauth2_approve
@@ -5854,7 +5855,7 @@ CREATE TABLE `system_users` (
 -- ----------------------------
 -- Records of system_users
 -- ----------------------------
-INSERT INTO `system_users` VALUES ('1', 'admin', '$2a$10$mRMIYLDtRHlf6.9ipiqH1.Z.bh/R9dO9d5iHiGYPigi6r5KOoR2Wm', 'wcg', '管理员', '103', '[1]', 'aoteman@126.com', '15612345678', '1', 'http://test.yudao.iocoder.cn/e1fdd7271685ec143a0900681606406621717a666ad0b2798b096df41422b32f.png', '0', '0:0:0:0:0:0:0:1', '2023-10-11 08:15:30', 'admin', '2021-01-05 17:03:47', null, '2023-10-11 08:15:30', '\0', '1');
+INSERT INTO `system_users` VALUES ('1', 'admin', '$2a$10$mRMIYLDtRHlf6.9ipiqH1.Z.bh/R9dO9d5iHiGYPigi6r5KOoR2Wm', 'wcg', '管理员', '103', '[1]', 'aoteman@126.com', '15612345678', '1', 'https://tse2-mm.cn.bing.net/th/id/OIP-C.pKlpfDeKQxw6waMtNVQVagAAAA?w=213&h=213&c=7&r=0&o=5&pid=1.7', '0', '0:0:0:0:0:0:0:1', '2023-10-11 08:15:30', 'admin', '2021-01-05 17:03:47', null, '2023-10-11 16:00:08', '\0', '1');
 INSERT INTO `system_users` VALUES ('100', 'yudao', '$2a$10$11U48RhyJ5pSBYWSn12AD./ld671.ycSzJHbyrtpeoMeYiw31eo8a', '芋道', '不要吓我', '104', '[1]', 'yudao@iocoder.cn', '15601691300', '1', '', '1', '127.0.0.1', '2022-07-09 23:03:33', '', '2021-01-07 09:07:17', null, '2022-07-09 23:03:33', '\0', '1');
 INSERT INTO `system_users` VALUES ('103', 'yuanma', '$2a$10$YMpimV4T6BtDhIaA8jSW.u8UTGBeGhc/qwXP4oxoMr4mOw9.qttt6', '源码', null, '106', null, 'yuanma@iocoder.cn', '15601701300', '0', '', '0', '127.0.0.1', '2022-07-08 01:26:27', '', '2021-01-13 23:50:35', null, '2022-07-08 01:26:27', '\0', '1');
 INSERT INTO `system_users` VALUES ('104', 'test', '$2a$10$GP8zvqHB//TekuzYZSBYAuBQJiNq1.fxQVDYJ.uBCOnWCtDVKE4H6', '测试号', null, '107', '[1,2]', '111@qq.com', '15601691200', '1', '', '0', '0:0:0:0:0:0:0:1', '2023-09-24 18:21:19', '', '2021-01-21 02:13:53', null, '2023-09-24 18:21:19', '\0', '1');
