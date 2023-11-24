@@ -140,7 +140,8 @@ export default {
       loginForm: {
         loginType: "uname",
         username: "admin",
-        password: "admin123",
+        password: "",
+        // password: "admin123",
         captchaVerification: "",
         mobile: "",
         mobileCode: "",
