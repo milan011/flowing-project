@@ -41,6 +41,21 @@ public class FlowingServiceImpl implements FlowingService {
     }
 
     @Override
+    public Long createVirtuallyFlowing(FlowingCreateReqVO createReqVO) {
+        // 插入
+        FlowingDO flowing1 = FlowingConvert.INSTANCE.convert(createReqVO);
+        flowing1.setMoneyType(2);
+        flowing1.setCostType(null);
+        FlowingDO flowing2 = FlowingConvert.INSTANCE.convert(createReqVO);
+        flowing2.setMoneyType(3);
+        flowingMapper.insert(flowing1);
+        flowingMapper.insert(flowing2);
+        // 返回
+        return flowing1.getId();
+    }
+
+
+    @Override
     public void updateFlowing(FlowingUpdateReqVO updateReqVO) {
         // 校验存在
         validateFlowingExists(updateReqVO.getId());

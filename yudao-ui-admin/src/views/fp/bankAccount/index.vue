@@ -103,8 +103,17 @@
                      v-hasPermi="['fp:bank-account:update']">禁用</el-button>
           <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
                      v-hasPermi="['fp:bank-account:update']">修改</el-button>
-          <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
-                     v-hasPermi="['fp:bank-account:delete']">删除</el-button>
+          <el-dropdown  @command="(command) => handleCommand(command, scope.$index, scope.row)"
+                        v-hasPermi="['fp:bank-account:delete', 'fp:bank-account:query']">
+            <el-button size="mini" type="text" icon="el-icon-d-arrow-right">更多</el-button>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="handleDelete"  size="mini" type="text" icon="el-icon-delete"
+                                v-hasPermi="['system:user:delete']">删除</el-dropdown-item>
+              <el-dropdown-item command="handleShowFloing"  size="mini" type="text" icon="el-icon-s-order"
+                                v-hasPermi="['system:user:query']">明细</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+
         </template>
       </el-table-column>
     </el-table>
@@ -229,6 +238,19 @@ export default {
     this.getList();
   },
   methods: {
+    // 更多操作
+    handleCommand(command, index, row) {
+      switch (command) {
+        case 'handleShowFloing':
+          this.handleShowFloing(row);//修改客户信息
+          break;
+        case 'handleDelete':
+          this.handleDelete(row);//红号变更
+          break;
+        default:
+          break;
+      }
+    },
     /** 查询列表 */
     getList() {
       this.loading = true;
@@ -333,6 +355,9 @@ export default {
           this.getList();
           this.$modal.msgSuccess("删除成功");
         }).catch(() => {});
+    },
+    handleShowFloing(row){
+      console.log('查看明细', row)
     },
     /** 导出按钮操作 */
     handleExport() {

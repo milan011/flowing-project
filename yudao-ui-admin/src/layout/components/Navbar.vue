@@ -7,9 +7,9 @@
 
     <div class="right-menu">
       <template v-if="device!=='mobile'">
-        <search id="header-search" class="right-menu-item" />
+<!--        <search id="header-search" class="right-menu-item" />
 
-        <!-- 站内信 -->
+        &lt;!&ndash; 站内信 &ndash;&gt;
         <notify-message class="right-menu-item hover-effect" />
 
         <el-tooltip content="源码地址" effect="dark" placement="bottom">
@@ -24,7 +24,7 @@
 
         <el-tooltip content="布局大小" effect="dark" placement="bottom">
           <size-select id="size-select" class="right-menu-item hover-effect" />
-        </el-tooltip>
+        </el-tooltip>-->
 
       </template>
 

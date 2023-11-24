@@ -9,6 +9,15 @@ export function createFlowing(data) {
   })
 }
 
+// 创建虚拟流水明细
+export function createVirtuallyFlowing(data) {
+  return request({
+    url: '/fp/flowing/create-virtually',
+    method: 'post',
+    data: data
+  })
+}
+
 // 更新流水明细
 export function updateFlowing(data) {
   return request({

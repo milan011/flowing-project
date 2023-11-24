@@ -21,6 +21,8 @@ public interface FlowingService {
      */
     Long createFlowing(@Valid FlowingCreateReqVO createReqVO);
 
+    Long createVirtuallyFlowing(@Valid FlowingCreateReqVO createReqVO);
+
     /**
      * 更新流水明细
      *

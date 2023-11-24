@@ -62,6 +62,13 @@ public class FlowingController {
         return success(flowingService.createFlowing(createReqVO));
     }
 
+    @PostMapping("/create-virtually")
+    @Operation(summary = "创建流水明细")
+    @PreAuthorize("@ss.hasPermission('fp:flowing:create')")
+    public CommonResult<Long> createVirtuallyFlowing(@Valid @RequestBody FlowingCreateReqVO createReqVO) {
+        return success(flowingService.createVirtuallyFlowing(createReqVO));
+    }
+
     @PutMapping("/update")
     @Operation(summary = "更新流水明细")
     @PreAuthorize("@ss.hasPermission('fp:flowing:update')")
